@@ -6,7 +6,7 @@ import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.Font;
 
-public class Main {
+public class Oyun {
     public static void main(String[] args) {
 
         ImageIcon fumo = new ImageIcon("Visual/djsjdjebfowodbwocbwoc.jpg"); // load image for label
