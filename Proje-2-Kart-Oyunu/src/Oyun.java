@@ -4,6 +4,7 @@ public class Oyun
     {
         Oyuncu bilgisayar = new Oyuncu();
         Oyuncu Player = new Oyuncu();
+        System.out.println("sa");
 
 
 
