@@ -1,15 +1,22 @@
+
 public class Oyun
 {
     public static void main(String[] args)
     {
-        Oyuncu bilgisayar = new Oyuncu();
-        Oyuncu Player = new Oyuncu();
-        System.out.println("sa");
+        final int NUMBER_OF_CARDS = 6;
+
+        Oyuncu Player = new Oyuncu(1,"Oyuncu",0);
+        Oyuncu bilgisayar = new Oyuncu(0,"Bilgisayar",0);
+
+        Player.ShuffleCards(NUMBER_OF_CARDS);
+        bilgisayar.ShuffleCards(NUMBER_OF_CARDS);
+        System.out.println("Insanlarin kartlari :");
+        Player.ShowCards();
+        System.out.println("Bilgisayarin kartlari :");
+        bilgisayar.ShowCards();
 
 
-
-
-    GraphicalUserInterface window = new GraphicalUserInterface();
-    window.MainGraphics();
+        GraphicalUserInterface window = new GraphicalUserInterface();
+        window.MainGraphics();
     }
 }

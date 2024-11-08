@@ -9,7 +9,7 @@ public class GraphicalUserInterface
 {
     public void MainGraphics()
     {
-    ImageIcon fumo = new ImageIcon("Proje-2-Kart-Oyunu/Visual/djsjdjebfowodbwocbwoc.jpg"); // load image for label
+    ImageIcon fumo = new ImageIcon("Visual/djsjdjebfowodbwocbwoc.jpg"); // load image for label
 
     Border border = BorderFactory.createLineBorder(Color.blue, 3);  // create border
 
@@ -35,7 +35,7 @@ public class GraphicalUserInterface
         window.setVisible(true);                                    // make window visible
         window.add(label);                                          // draws our label
 
-    ImageIcon logo = new ImageIcon("Proje-2-Kart-Oyunu/Visual/logo.png");           // create image for icon
+    ImageIcon logo = new ImageIcon("Visual/logo.png");           // create image for icon
         window.setIconImage(logo.getImage());                        // change icon
         window.getContentPane().setBackground(new Color(255, 0, 0)); // set bg color
     }
