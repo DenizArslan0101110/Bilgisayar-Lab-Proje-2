@@ -5,57 +5,53 @@ import javax.swing.*;
 //import java.awt.geom.*;
 //import java.awt.image.*;
 import java.awt.*;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
-public class GraphicalUserInterface
+public class GraphicalUserInterface extends JPanel
 {
-    BufferedImage fumobuffer;
-    public void MainGraphics(ArrayList<CardForGraphics> cardsinfo, BufferedImage[] cards)
+
+    JFrame window;
+    JPanel cards_panel;
+
+    private ArrayList<CardForGraphics> cardsinfo;
+    private ArrayList<BufferedImage> cards;
+
+    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<BufferedImage> cards)
     {
-
-
-        // load buffered image (this can rotate)
-        //BufferedImage jpeg = new BufferedImage(100, 150, BufferedImage.TYPE_INT_ARGB);
-        //fumobuffer = loadbimg(jpeg, "Visual/djsjdjebfowodbwocbwoc.jpg");
-        //fumobuffer = ImageRotator.rotate(fumobuffer, 24.0);
-
-
-        // JPanel used to draw the buffered image
-        JPanel cards_panel = new JPanel()
-        {
-            @Override
-            protected void paintComponent(Graphics g)
-            {
-                super.paintComponent(g);
-                for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards[i], cardsinfo.get(i).x_pos, cardsinfo.get(i).y_pos, null);  // Draw the image at coordinates (0, 0)
-            }
-        };
-
+        this.cards = cards;
+        this.cardsinfo = cardsinfo;
         // JFrame basically our window
-        JFrame window = new JFrame();                               // create frame
-            window.setTitle("Kart Oyunu: Savaş Araçları");              // set title
-            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      // x button purpose
-            window.setResizable(false);                                 // disable resize
-            window.setSize(1366, 876);                                  // set size
-            window.setVisible(true);                                    // make window visible
-
-            window.add(cards_panel);                                    // will be used to draw cards (I hope)
-
+        this.window = new JFrame();                               // create frame
+        window.setTitle("Kart Oyunu: Savaş Araçları");              // set title
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      // x button purpose
+        window.setResizable(false);                                 // disable resize
+        window.setSize(1366, 876);                                  // set size
+        window.setVisible(true);                                    // make window visible
 
     }
 
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        System.out.println("angle in gui "+cardsinfo.get(0).rotation);
+        super.paintComponent(g);
+        for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards.get(i), cardsinfo.get(i).x_pos, cardsinfo.get(i).y_pos, null);
+    }
+
     // fills in the info for cards(the image versions), by looking at cardsinfo(the struct one)
-    public static BufferedImage[] fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo, BufferedImage[] cards, byte arraysize)
+    public static ArrayList<BufferedImage> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo, ArrayList<BufferedImage> cards, byte arraysize)
     {
         for(short i=0; i<arraysize ;i++)
         {
-            cards[i] = new BufferedImage(cardsinfo.get(i).width, cardsinfo.get(i).height, BufferedImage.TYPE_INT_ARGB);
-            cards[i] = loadbimg(cards[i], cardsinfo.get(i).path);
-            cards[i] = ImageRotator.rotate(cards[i], cardsinfo.get(i).rotation);
+            cards.add(i, new BufferedImage(cardsinfo.get(i).width, cardsinfo.get(i).height, BufferedImage.TYPE_INT_ARGB));
+            cards.set(i, loadbimg(cards.get(i), cardsinfo.get(i).path));
+            cards.set(i, rotate(cards.get(i), cardsinfo.get(i).rotation));
         }
         return cards;
     }
@@ -84,4 +80,55 @@ public class GraphicalUserInterface
         }
         return bimg;
     }
+
+    // rotates Image, took straight out of StackOverflow :skull:
+    public static BufferedImage rotate(BufferedImage bimg, Double angle)
+    {
+        double sin = Math.abs(Math.sin(Math.toRadians(angle)));
+        double cos = Math.abs(Math.cos(Math.toRadians(angle)));
+        int w = bimg.getWidth();
+        int h = bimg.getHeight();
+        int neww = (int) Math.floor(w*cos + h*sin);
+        int newh = (int) Math.floor(h*cos + w*sin);
+        BufferedImage rotated = new BufferedImage(neww, newh, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphic = rotated.createGraphics();
+
+        graphic.setComposite(AlphaComposite.SrcOver.derive(0.0f));  // Fully transparent background
+        graphic.fillRect(0, 0, neww, newh);  // Fill the entire image with transparency
+        graphic.setComposite(AlphaComposite.SrcOver);
+
+        graphic.translate((neww-w)/2, (newh-h)/2);
+        graphic.rotate(Math.toRadians(angle), (float)w/2, (float)h/2);
+        graphic.drawRenderedImage(bimg, null);
+        graphic.dispose();
+        return rotated;
+    }
+    /*public static BufferedImage rotate(BufferedImage bimg, Double angle) {
+        double sin = Math.abs(Math.sin(Math.toRadians(angle)));
+        double cos = Math.abs(Math.cos(Math.toRadians(angle)));
+        int w = bimg.getWidth();
+        int h = bimg.getHeight();
+        int neww = (int) Math.floor(w * cos + h * sin);
+        int newh = (int) Math.floor(h * cos + w * sin);
+        BufferedImage rotated = new BufferedImage(neww, newh, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphic = rotated.createGraphics();
+        graphic.setComposite(AlphaComposite.SrcOver.derive(0.0f));  // Fully transparent background
+        graphic.fillRect(0, 0, neww, newh);  // Fill the entire image with transparency
+        graphic.setComposite(AlphaComposite.SrcOver);
+
+        // Translate the graphics context so the image rotates around its center
+        graphic.translate((neww - w) / 2, (newh - h) / 2);
+
+        // Rotate the image by the given angle around its center
+        graphic.rotate(Math.toRadians(angle), (float) w / 2, (float) h / 2);
+
+        // Draw the original image onto the rotated canvas
+        graphic.drawRenderedImage(bimg, null);
+
+        // Dispose of the graphics context
+        graphic.dispose();
+
+        // Return the rotated image with transparent areas
+        return rotated;
+    }*/
 }

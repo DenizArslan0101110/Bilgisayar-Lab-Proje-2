@@ -16,4 +16,10 @@ public class CardForGraphics
         this.rotation = rotation;
         this.path = path;
     }
+
+    public void AddToRotation(double increase)
+    {
+        this.rotation += increase;
+        if(this.rotation >= 360) this.rotation-=360;
+    }
 }
