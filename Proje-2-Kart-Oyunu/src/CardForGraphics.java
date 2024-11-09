@@ -2,17 +2,13 @@ import java.awt.image.BufferedImage;
 
 public class CardForGraphics
 {
-    short x_pos;
-    short y_pos;
-    short display_x_pos;
-    short display_y_pos;
-    short width;
-    short height;
+    boolean owners_ID, used_or_not = false;
+    short x_pos, y_pos, display_x_pos, display_y_pos, width, height;
     double rotation;
     String path;
     BufferedImage image;
 
-    CardForGraphics(short x_pos, short y_pos, short width, short height, double rotation, String path)
+    CardForGraphics(short x_pos, short y_pos, short width, short height, double rotation, String path, boolean owners_ID)
     {
         this.x_pos = x_pos;
         this.y_pos = y_pos;
@@ -23,6 +19,17 @@ public class CardForGraphics
         this.rotation = rotation;
         this.path = path;
         this.image = GraphicalUserInterface.loadbimg(this.path);
+        this.owners_ID = owners_ID;
+    }
+
+    public void SetXPos(short x_pos)
+    {
+        this.x_pos = x_pos;
+    }
+
+    public void SetYPos(short y_pos)
+    {
+        this.y_pos = y_pos;
     }
 
     /*public void Set_W(short width)
@@ -44,5 +51,10 @@ public class CardForGraphics
     {
         this.rotation += increase;
         if(this.rotation >= 360) this.rotation-=360;
+    }
+
+    public void SetRotation(double value)
+    {
+        this.rotation = value%360;
     }
 }

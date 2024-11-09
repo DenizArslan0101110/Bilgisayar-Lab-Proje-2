@@ -15,14 +15,14 @@ public class Oyuncu
     Sida sida = new Sida(0,15,10,"Deniz","Sida",10,10);                         ///Sida
 
 
-    int OyuncuID; // 1 insan, 0 makine
+    boolean OyuncuID; // 1 insan, 0 makine
     String OyuncuAdi;
     int skor;
     int card_score = 0;
     int random_int;
 
 
-    Oyuncu(int OyuncuID,String OyuncuAdi,int skor){
+    Oyuncu(boolean OyuncuID,String OyuncuAdi,int skor){
         this.OyuncuID = OyuncuID;
         this.OyuncuAdi = OyuncuAdi;
         this.skor = skor;
@@ -73,20 +73,20 @@ public class Oyuncu
         {
             if (playingCard instanceof Ucak tempt)
             {
-                if(this.OyuncuID==0) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/uçak.png"));
-                if(this.OyuncuID==1) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/uçak.png"));
+                if(!this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID));
+                if(this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID));
                 System.out.println(tempt.altSinif);
             }
             else if (playingCard instanceof Obus tempt)
             {
-                if(this.OyuncuID==0) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/obüs.png"));
-                if(this.OyuncuID==1) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/obüs.png"));
+                if(!this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID));
+                if(this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID));
                 System.out.println(tempt.altSinif);
             }
             else if (playingCard instanceof Firkateyn tempt)
             {
-                if(this.OyuncuID==0) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/fırkateyn.png"));
-                if(this.OyuncuID==1) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/fırkateyn.png"));
+                if(!this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID));
+                if(this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID));
                 System.out.println(tempt.altSinif);
             }
             kaydir += 150;
