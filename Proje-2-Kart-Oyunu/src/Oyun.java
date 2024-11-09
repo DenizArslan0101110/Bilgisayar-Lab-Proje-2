@@ -8,9 +8,7 @@ public class Oyun
 {
     public static void main(String[] args)
     {
-        Oyuncu bilgisayar = new Oyuncu();
-        Oyuncu Player = new Oyuncu();
-        System.out.println("sa");
+        final int NUMBER_OF_CARDS = 6;
 
         //CardForGraphics[] cardsinfo = new CardForGraphics[20];
         ArrayList<CardForGraphics> cardsinfo = new ArrayList<>();
@@ -37,7 +35,15 @@ public class Oyun
         Timer screen_refresh_timer = new Timer(1000/60, screen_refresher);
         screen_refresh_timer.start();
 
+        Oyuncu Player = new Oyuncu(1,"Oyuncu",0);
+        Oyuncu bilgisayar = new Oyuncu(0,"Bilgisayar",0);
 
+        Player.ShuffleCards(NUMBER_OF_CARDS);
+        bilgisayar.ShuffleCards(NUMBER_OF_CARDS);
+        System.out.println("Insanlarin kartlari :");
+        Player.ShowCards();
+        System.out.println("Bilgisayarin kartlari :");
+        bilgisayar.ShowCards();
 
 
     }

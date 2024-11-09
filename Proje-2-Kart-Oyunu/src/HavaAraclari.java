@@ -1,6 +1,26 @@
-public abstract class HavaAraclari extends SavasAraclari
+abstract class HavaAraclari extends SavasAraclari
 {
-    public String sinif(){return "Hava";}
-    abstract String alt_sinif();
-    abstract byte kara_vurus_avantaji();
+    public int karaVurusAvantaji;
+    public String altSinif;
+
+    public HavaAraclari(int seviyePuani,int dayaniklilik,int vurus,String sinif,String altSinif,int karaVurusAvantaji){
+        super(seviyePuani,dayaniklilik,vurus,sinif);
+        this.karaVurusAvantaji = karaVurusAvantaji;
+        this.altSinif = altSinif;
+    }
+
+
+
+    public void Stat_Goster() {
+        super.Stat_Goster();
+        System.out.println(karaVurusAvantaji);
+    }
+
+    public int KartPuaniGoster(){
+        return 5;
+    }
+
+    public void DurumGuncelle(){
+        System.out.println("sa1");
+    }
 }
