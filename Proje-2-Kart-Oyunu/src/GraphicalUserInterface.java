@@ -31,15 +31,8 @@ public class GraphicalUserInterface extends JPanel
     {
         super.paintComponent(g);
         for (CardForGraphics cardsinfoii : cardsinfo) g.drawImage(cardsinfoii.image, cardsinfoii.display_x_pos, cardsinfoii.display_y_pos, null);
-        //for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards.get(i), cardsinfo.get(i).display_x_pos, cardsinfo.get(i).display_y_pos, null);
-        //for(CardForGraphics cardsinfo : )
-        //{
-
-
-        //}
     }
 
-    // fills in the info for cards(the image versions), by looking at cardsinfo(the struct one)
     public static ArrayList<CardForGraphics> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo)
     {
         for (CardForGraphics cardsinfoii : cardsinfo) {
@@ -105,32 +98,4 @@ public class GraphicalUserInterface extends JPanel
         graphic.dispose();
         return rotated;
     }
-    /*public static BufferedImage rotate(BufferedImage bimg, Double angle) {
-        double sin = Math.abs(Math.sin(Math.toRadians(angle)));
-        double cos = Math.abs(Math.cos(Math.toRadians(angle)));
-        int w = bimg.getWidth();
-        int h = bimg.getHeight();
-        int neww = (int) Math.floor(w * cos + h * sin);
-        int newh = (int) Math.floor(h * cos + w * sin);
-        BufferedImage rotated = new BufferedImage(neww, newh, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphic = rotated.createGraphics();
-        graphic.setComposite(AlphaComposite.SrcOver.derive(0.0f));  // Fully transparent background
-        graphic.fillRect(0, 0, neww, newh);  // Fill the entire image with transparency
-        graphic.setComposite(AlphaComposite.SrcOver);
-
-        // Translate the graphics context so the image rotates around its center
-        graphic.translate((neww - w) / 2, (newh - h) / 2);
-
-        // Rotate the image by the given angle around its center
-        graphic.rotate(Math.toRadians(angle), (float) w / 2, (float) h / 2);
-
-        // Draw the original image onto the rotated canvas
-        graphic.drawRenderedImage(bimg, null);
-
-        // Dispose of the graphics context
-        graphic.dispose();
-
-        // Return the rotated image with transparent areas
-        return rotated;
-    }*/
 }
