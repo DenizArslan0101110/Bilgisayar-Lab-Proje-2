@@ -1,12 +1,5 @@
 import javax.swing.*;
-//import javax.swing.BorderFactory;
-//import javax.swing.border.Border;
-//import java.awt.*;
-//import java.awt.geom.*;
-//import java.awt.image.*;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +10,11 @@ public class GraphicalUserInterface extends JPanel
 {
 
     JFrame window;
-    JPanel cards_panel;
 
     private ArrayList<CardForGraphics> cardsinfo;
-    private ArrayList<BufferedImage> cards;
 
-    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<BufferedImage> cards)
+    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo)
     {
-        this.cards = cards;
         this.cardsinfo = cardsinfo;
         // JFrame basically our window
         this.window = new JFrame();                               // create frame
@@ -39,27 +29,31 @@ public class GraphicalUserInterface extends JPanel
     @Override
     protected void paintComponent(Graphics g)
     {
-        System.out.println("angle in gui "+cardsinfo.get(0).rotation);
         super.paintComponent(g);
-        for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards.get(i), cardsinfo.get(i).display_x_pos, cardsinfo.get(i).display_y_pos, null);
+        for (CardForGraphics cardsinfoii : cardsinfo) g.drawImage(cardsinfoii.image, cardsinfoii.display_x_pos, cardsinfoii.display_y_pos, null);
+        //for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards.get(i), cardsinfo.get(i).display_x_pos, cardsinfo.get(i).display_y_pos, null);
+        //for(CardForGraphics cardsinfo : )
+        //{
+
+
+        //}
     }
 
     // fills in the info for cards(the image versions), by looking at cardsinfo(the struct one)
-    public static ArrayList<BufferedImage> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo, ArrayList<BufferedImage> cards, byte arraysize)
+    public static ArrayList<CardForGraphics> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo)
     {
-        for(short i=0; i<arraysize ;i++)
-        {
-            cards.add(i, new BufferedImage(cardsinfo.get(i).width, cardsinfo.get(i).height, BufferedImage.TYPE_INT_ARGB));
-            cards.set(i, loadbimg(cards.get(i), cardsinfo.get(i).path));
-            cards.set(i, rotate(cards.get(i), cardsinfo.get(i).rotation, cardsinfo.get(i)));
+        for (CardForGraphics cardsinfoii : cardsinfo) {
+            cardsinfoii.set_Image(loadbimg(cardsinfoii.path));
+            cardsinfoii.image = rotate(cardsinfoii.rotation, cardsinfoii);
         }
-        return cards;
+        return cardsinfo;
     }
 
 
     // method for loading a buffered image with a specific jpg file
-    public static BufferedImage loadbimg(BufferedImage bimg, String path)
+    public static BufferedImage loadbimg(String path)
     {
+        BufferedImage bimg;
         try
         {
             File imgFile = new File(path);
@@ -67,7 +61,9 @@ public class GraphicalUserInterface extends JPanel
             // Check if the image was successfully loaded
             if (bimg != null)
             {
-                System.out.println("Image loaded successfully!");
+                //System.out.println("Image loaded successfully!");
+                // code requires us to load all the images every single frame
+                // to reduce clutter I give no info when load is successfull
                 return bimg;
             }
             else System.out.println("Failed to load the image.");
@@ -76,18 +72,18 @@ public class GraphicalUserInterface extends JPanel
         {
             // Handle any I/O exceptions (e.g., file not found, unsupported format)
             System.out.println("Specified image at "+path+" could not be found, it wont be loaded.");
-            return bimg;
+            return null;
         }
-        return bimg;
+        return null;
     }
 
     // rotates Image, took straight out of StackOverflow :skull:
-    public static BufferedImage rotate(BufferedImage bimg, Double angle, CardForGraphics cardsinfo)
+    public static BufferedImage rotate(Double angle, CardForGraphics cardsinfo)
     {
         double sin = Math.abs(Math.sin(Math.toRadians(angle)));
         double cos = Math.abs(Math.cos(Math.toRadians(angle)));
-        int w = bimg.getWidth();
-        int h = bimg.getHeight();
+        int w = cardsinfo.image.getWidth();
+        int h = cardsinfo.image.getHeight();
         int neww = (int) Math.floor(w*cos + h*sin);
         int newh = (int) Math.floor(h*cos + w*sin);
 
@@ -105,7 +101,7 @@ public class GraphicalUserInterface extends JPanel
 
         graphic.translate((neww-w)/2, (newh-h)/2);
         graphic.rotate(Math.toRadians(angle), (float)w/2, (float)h/2);
-        graphic.drawRenderedImage(bimg, null);
+        graphic.drawRenderedImage(cardsinfo.image, null);
         graphic.dispose();
         return rotated;
     }

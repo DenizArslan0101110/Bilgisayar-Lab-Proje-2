@@ -7,12 +7,12 @@ public class Oyuncu
     Random random = new Random();
 
 
-    Ucak ucak = new Ucak(0,15,10,"Hava","Uçak",10);         ///uçak
-    Siha siha = new Siha(0,20,10,"Hava","Siha",10,20);      ///Siha
-    Obus obus = new Obus(0,20,10,"Kara","Obus",5);          ///Obüs
-    KFS kfs = new KFS(0,10,10,"Kara","KFS",10,20);          ///Zenci
-    Firkateyn firkateyn = new Firkateyn(0,25,10,"Deniz","Firkateyn",5);         ///Firkateyn
-    Sida sida = new Sida(0,15,10,"Deniz","Sida",10,10);     ///Sida
+    Ucak ucak = new Ucak(0,15,10,"Hava","Uçak",10);                             ///uçak
+    Siha siha = new Siha(0,20,10,"Hava","Siha",10,20);                          ///Siha
+    Obus obus = new Obus(0,20,10,"Kara","Obüs",5);                              ///Obüs
+    KFS kfs = new KFS(0,10,10,"Kara","KFS",10,20);                              ///Zenci
+    Firkateyn firkateyn = new Firkateyn(0,25,10,"Deniz","Fırkateyn",5);         ///Firkateyn
+    Sida sida = new Sida(0,15,10,"Deniz","Sida",10,10);                         ///Sida
 
 
     int OyuncuID; // 1 insan, 0 makine
@@ -66,19 +66,34 @@ public class Oyuncu
             }
         }
     }
-    public void ShowCards(){
-
-        for (SavasAraclari playingCard : Playing_Cards) {
-            if (playingCard instanceof Ucak tempt) {
+    public void ShowCards(ArrayList<CardForGraphics> cardsinfo)
+    {
+        short kaydir = 0;
+        for (SavasAraclari playingCard : Playing_Cards)
+        {
+            if (playingCard instanceof Ucak tempt)
+            {
+                if(this.OyuncuID==0) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/uçak.png"));
+                if(this.OyuncuID==1) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/uçak.png"));
                 System.out.println(tempt.altSinif);
             }
-            else if (playingCard instanceof Obus tempt) {
+            else if (playingCard instanceof Obus tempt)
+            {
+                if(this.OyuncuID==0) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/obüs.png"));
+                if(this.OyuncuID==1) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/obüs.png"));
                 System.out.println(tempt.altSinif);
             }
-            else if (playingCard instanceof Firkateyn tempt) {
+            else if (playingCard instanceof Firkateyn tempt)
+            {
+                if(this.OyuncuID==0) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/fırkateyn.png"));
+                if(this.OyuncuID==1) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/fırkateyn.png"));
                 System.out.println(tempt.altSinif);
             }
+            kaydir += 150;
         }
+        // yalan söylüyo warning bu arada, bu fonksiyon basbaya ekleme yapıyo yapmasa kod patlar
+        //cardsinfo = GraphicalUserInterface.fillImagesInAccordanceToTheirInfo(cardsinfo);
+        // edit: patlamıyomuş ne iş
     }
 
 
