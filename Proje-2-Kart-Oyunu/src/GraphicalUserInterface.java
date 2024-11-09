@@ -41,7 +41,7 @@ public class GraphicalUserInterface extends JPanel
     {
         System.out.println("angle in gui "+cardsinfo.get(0).rotation);
         super.paintComponent(g);
-        for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards.get(i), cardsinfo.get(i).x_pos, cardsinfo.get(i).y_pos, null);
+        for(short i=0; i<cardsinfo.size() ;i++) g.drawImage(cards.get(i), cardsinfo.get(i).display_x_pos, cardsinfo.get(i).display_y_pos, null);
     }
 
     // fills in the info for cards(the image versions), by looking at cardsinfo(the struct one)
@@ -51,7 +51,7 @@ public class GraphicalUserInterface extends JPanel
         {
             cards.add(i, new BufferedImage(cardsinfo.get(i).width, cardsinfo.get(i).height, BufferedImage.TYPE_INT_ARGB));
             cards.set(i, loadbimg(cards.get(i), cardsinfo.get(i).path));
-            cards.set(i, rotate(cards.get(i), cardsinfo.get(i).rotation));
+            cards.set(i, rotate(cards.get(i), cardsinfo.get(i).rotation, cardsinfo.get(i)));
         }
         return cards;
     }
@@ -82,7 +82,7 @@ public class GraphicalUserInterface extends JPanel
     }
 
     // rotates Image, took straight out of StackOverflow :skull:
-    public static BufferedImage rotate(BufferedImage bimg, Double angle)
+    public static BufferedImage rotate(BufferedImage bimg, Double angle, CardForGraphics cardsinfo)
     {
         double sin = Math.abs(Math.sin(Math.toRadians(angle)));
         double cos = Math.abs(Math.cos(Math.toRadians(angle)));
@@ -90,6 +90,12 @@ public class GraphicalUserInterface extends JPanel
         int h = bimg.getHeight();
         int neww = (int) Math.floor(w*cos + h*sin);
         int newh = (int) Math.floor(h*cos + w*sin);
+
+        cardsinfo.display_x_pos = cardsinfo.x_pos;
+        cardsinfo.display_y_pos = cardsinfo.y_pos;
+        cardsinfo.display_x_pos -= (short)((neww-cardsinfo.width)/2);
+        cardsinfo.display_y_pos -= (short)((newh-cardsinfo.height)/2);
+
         BufferedImage rotated = new BufferedImage(neww, newh, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphic = rotated.createGraphics();
 

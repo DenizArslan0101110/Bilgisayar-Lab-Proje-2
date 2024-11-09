@@ -14,7 +14,7 @@ public class Oyun
 
         //CardForGraphics[] cardsinfo = new CardForGraphics[20];
         ArrayList<CardForGraphics> cardsinfo = new ArrayList<>();
-        cardsinfo.add(new CardForGraphics((short)200, (short)100, (short)1, (short)1, 45, "Visual/djsjdjebfowodbwocbwoc.jpg"));
+        cardsinfo.add(new CardForGraphics((short)300, (short)200, (short)612, (short)407, 45, "Visual/djsjdjebfowodbwocbwoc.jpg"));
         //ArrayList<BufferedImage> cards = new ArrayList<BufferedImage>();
         ArrayList<BufferedImage> cards = GraphicalUserInterface.fillImagesInAccordanceToTheirInfo(cardsinfo, new ArrayList<>(), (byte)cardsinfo.size());
 
@@ -27,9 +27,9 @@ public class Oyun
             {
                 //window.MainGraphics(cardsinfo, cards);
                 cards.set(0, GraphicalUserInterface.loadbimg(cards.get(0), cardsinfo.get(0).path));
-                cards.set(0, GraphicalUserInterface.rotate(cards.get(0), cardsinfo.get(0).rotation));
+                cards.set(0, GraphicalUserInterface.rotate(cards.get(0), cardsinfo.get(0).rotation, cardsinfo.get(0)));
                 gui.repaint();
-                cardsinfo.get(0).AddToRotation(1);
+                cardsinfo.get(0).AddToRotation(5);
                 System.out.println("card 1 angle "+cardsinfo.get(0).rotation);
             }
         };

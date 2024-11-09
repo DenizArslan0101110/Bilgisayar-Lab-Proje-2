@@ -2,6 +2,8 @@ public class CardForGraphics
 {
     short x_pos;
     short y_pos;
+    short display_x_pos;
+    short display_y_pos;
     short width;
     short height;
     double rotation;
