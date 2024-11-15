@@ -1,6 +1,6 @@
 public class Siha extends HavaAraclari
 {
-    private int denizVurusAvantaji;
+    public int denizVurusAvantaji;
 
     public Siha(int seviyePuani,int dayaniklilik,int vurus,String sinif,String altsinif,int karaVurusAvantaji,int denizVurusAvantaji){
         super(seviyePuani, dayaniklilik,vurus,sinif,altsinif,karaVurusAvantaji);
@@ -15,9 +15,20 @@ public class Siha extends HavaAraclari
     }
 
     public int KartPuaniGoster(){
-        return 5;
+        return seviyePuani;
     }
-    public void DurumGuncelle(){
-        System.out.println("sa1");
+    public int DurumGuncelle(int damage,int xp){
+        dayaniklilik -= damage;
+        if(dayaniklilik <= 0)
+        {
+            if(xp == 0){
+                seviyePuani = 10;
+            }
+            else
+                seviyePuani += xp;
+            return -1;
+        }
+        else
+            return 1;
     }
 }

@@ -9,10 +9,25 @@ abstract class DenizAraclari extends SavasAraclari
         this.altSinif = altSinif;
     }
 
-    public int KartPuaniGoster(){
-        return 5;
+    public void Stat_Goster() {
+        super.Stat_Goster();
+        System.out.println(havaVurusAvantaji);
     }
-    public void DurumGuncelle(){
-        System.out.println("sa1");
+    public int KartPuaniGoster(){
+        return seviyePuani;
+    }
+    public int DurumGuncelle(int damage,int xp){
+        dayaniklilik -= damage;
+        if(dayaniklilik <= 0){
+            if(xp == 0){
+                seviyePuani = 10;
+            }
+            else
+                seviyePuani += xp;
+            return -1;
+        }
+
+        else
+            return 1;
     }
 }

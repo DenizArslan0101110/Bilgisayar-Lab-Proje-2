@@ -20,7 +20,18 @@ abstract class HavaAraclari extends SavasAraclari
         return 5;
     }
 
-    public void DurumGuncelle(){
-        System.out.println("sa1");
+    public int DurumGuncelle(int damage,int xp){
+        dayaniklilik -= damage;
+        if(dayaniklilik <= 0){
+            if(xp == 0){
+                seviyePuani = 10;
+            }
+            else
+                seviyePuani += xp;
+            return -1;
+        }
+
+        else
+            return 1;
     }
 }

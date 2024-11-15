@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Random;
 
 
@@ -28,7 +29,7 @@ public class Oyuncu
         this.skor = skor;
     }
 
-    private final ArrayList<SavasAraclari> Playing_Cards = new ArrayList<>();     /// Bu bizim destemiz.
+    public ArrayList<SavasAraclari> Playing_Cards = new ArrayList<>();     /// Bu bizim destemiz.
 
     public void ShuffleCards(int card_number) {
 
@@ -96,7 +97,32 @@ public class Oyuncu
         // edit: patlamıyomuş ne iş
     }
 
+    public ArrayList<Integer> kartSec(int x, int y, int z){       /// Insan için girilen 3 parametre için kart seç.
+        LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
 
+        isChosen1.add(x);
+        isChosen1.add(y);
+        isChosen1.add(z);
 
+        ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
+        return isChosen;
+    }
 
+    public ArrayList<Integer> kartSec(){                         /// Bilgisayar için kart seç.
+        LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
+
+        while(isChosen1.size() < 3) {
+            isChosen1.add(random.nextInt(Playing_Cards.size()));
+        }
+        ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
+        return isChosen;
+    }
+
+    public void SkorGöster(){
+        for (int i = 0; i < Playing_Cards.size(); i++) {
+            card_score += Playing_Cards.get(i).seviyePuani;
+        }
+
+        //return skor;      /// Normalde return değeri vardi yedim onu.
+    }
 }

@@ -1,15 +1,31 @@
 public class KFS extends KaraAraclari
 {
-    private int havaVurusAvantaji;
+    public int havaVurusAvantaji;
 
     public KFS(int seviyePuani,int dayaniklilik,int vurus,String sinif,String altsinif,int denizVurusAvantaji,int havaVurusAvantaji){
         super(seviyePuani, dayaniklilik,vurus,sinif,altsinif,denizVurusAvantaji);
         this.havaVurusAvantaji = havaVurusAvantaji;
     }
-    public int KartPuaniGoster(){
-        return 5;
+    public void Stat_Goster() {
+        System.out.println(havaVurusAvantaji);
+        super.Stat_Goster();
     }
-    public void DurumGuncelle(){
-        System.out.println("sa1");
+    public int KartPuaniGoster(){
+        return seviyePuani;
+    }
+
+    public int DurumGuncelle(int damage,int xp){
+        dayaniklilik -= damage;
+        if(dayaniklilik <= 0){
+            if(xp == 0){
+                seviyePuani = 10;
+            }
+            else
+                seviyePuani += xp;
+            return -1;
+        }
+
+        else
+            return 1;
     }
 }
