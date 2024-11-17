@@ -44,7 +44,7 @@ public class Oyun
 
 
 
-        for (; Turn_number < 1 ; Turn_number++) {
+        for (; Turn_number < 5 ; Turn_number++) {
 
             System.out.println("Kart numarasi giriniz: ");
 
@@ -134,65 +134,69 @@ public class Oyun
         for (int i = 0; i < 3; i++) {       /// Her kartin karşısandakiyle savaşması için 3 kere dönüyor (sanirim)(sanırım değil ama yazması komik).
 
             int damageForPlayer = Player.Playing_Cards.get(Cards.get(i)).vurus;
-            int damageForComputer = bilgisayar.Playing_Cards.get(Cards.get(i)).vurus;
-            System.out.println("Bilgisayar için değer : " +CardsForComputer.get(i));
+            int damageForComputer = bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).vurus;
+
             Player.Playing_Cards.get(Cards.get(i)).isUsed = true;
             bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).isUsed = true;
 
             System.out.println("Oyunucunun " + (i + 1) +". karti sudur : "+ Player.Playing_Cards.get(Cards.get(i)));
+            Player.Playing_Cards.get(Cards.get(i)).Stat_Goster();
             System.out.println("Bilgisayarin " + (i+1) +". karti sudur : "+ bilgisayar.Playing_Cards.get(CardsForComputer.get(i)));
+            bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).Stat_Goster();
+            System.out.println("asdasdasfasd :" + bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).dayaniklilik);
 
             ///Damage for player
 
-            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForPlayer += (tempt).denizVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Ucak tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
+            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof DenizAraclari) damageForPlayer += (tempt).denizVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Ucak tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
 
-            if(Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForPlayer += tempt.denizVurusAvantaji;
-            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Obus tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForPlayer += tempt.denizVurusAvantaji;
+            if(Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof DenizAraclari) damageForPlayer += tempt.denizVurusAvantaji;
+            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Obus tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof DenizAraclari) damageForPlayer += tempt.denizVurusAvantaji;
 
-            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
-            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Firkateyn tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
+            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
+            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Firkateyn tempt && bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
 
             ///Damage for computer
 
-            if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += (tempt).denizVurusAvantaji;
-            else if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
-            else if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Ucak tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
+            if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += (tempt).denizVurusAvantaji;
+            else if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
+            else if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Ucak tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
 
-            if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += tempt.denizVurusAvantaji;
-            else if (bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
-            else if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Obus tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += tempt.denizVurusAvantaji;
+            if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += tempt.denizVurusAvantaji;
+            else if (bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
+            else if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Obus tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += tempt.denizVurusAvantaji;
 
-            if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
-            else if (bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
-            else if(bilgisayar.Playing_Cards.get(Cards.get(i)) instanceof Firkateyn tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
+            if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
+            else if (bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
+            else if(bilgisayar.Playing_Cards.get(CardsForComputer.get(i)) instanceof Firkateyn tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
 
 
             int real_XP = bilgisayar.Playing_Cards.get(Cards.get(i)).seviyePuani;
-            int real_XP1 = Player.Playing_Cards.get(Cards.get(i)).seviyePuani;
+            int real_XP1 = Player.Playing_Cards.get(CardsForComputer.get(i)).seviyePuani;
 
             System.out.println("Insanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
-            System.out.println("Insanlarin dayanikliliği : " + bilgisayar.Playing_Cards.get(Cards.get(i)).dayaniklilik);
+            System.out.println("Bilgisayarin dayanikliliği : " + bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).dayaniklilik);
 
             int isDead = Player.Playing_Cards.get(Cards.get(i)).DurumGuncelle(damageForComputer,real_XP);        ///Xp ve hasar yolla
-            int isDead1 = bilgisayar.Playing_Cards.get(Cards.get(i)).DurumGuncelle(damageForPlayer,real_XP1);         ///Xp ve hasar yolla
+            int isDead1 = bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).DurumGuncelle(damageForPlayer,real_XP1);         ///Xp ve hasar yolla
 
-            System.out.println("\nBilgisayar hasari sudur : " + damageForComputer);
-            System.out.println("Oyuncu hasari sudur : " +damageForPlayer);
+
+            System.out.println("\nOyuncu hasari sudur : " +damageForPlayer);
+            System.out.println("Bilgisayar hasari sudur : " + damageForComputer);
 
             System.out.println("\nInsanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
-            System.out.println("Insanlarin dayanikliliği : " + bilgisayar.Playing_Cards.get(Cards.get(i)).dayaniklilik);
+            System.out.println("Bilgisayin dayanikliliği : " + bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).dayaniklilik);
 
             if(isDead == -1){
-                Player.Playing_Cards.remove(i);
+                Player.Playing_Cards.remove(Cards.get(i));
                 System.out.print("\nOyuncu karti öldü !\n");
 
             }
             if(isDead1 == -1){
-                bilgisayar.Playing_Cards.remove(i);
+                bilgisayar.Playing_Cards.remove(CardsForComputer.get(i));
                 System.out.print("\nBilgisayarin karti öldü !\n");
             }
 

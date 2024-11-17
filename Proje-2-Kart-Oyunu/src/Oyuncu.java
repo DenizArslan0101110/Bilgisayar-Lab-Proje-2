@@ -8,14 +8,6 @@ public class Oyuncu
     Random random = new Random();
 
 
-    Ucak ucak = new Ucak(0,15,10,"Hava","Uçak",10);                             ///uçak
-    Siha siha = new Siha(0,20,10,"Hava","Siha",10,20);                          ///Siha
-    Obus obus = new Obus(0,20,10,"Kara","Obüs",5);                              ///Obüs
-    KFS kfs = new KFS(0,10,10,"Kara","KFS",10,20);                              ///Zenci
-    Firkateyn firkateyn = new Firkateyn(0,25,10,"Deniz","Fırkateyn",5);         ///Firkateyn
-    Sida sida = new Sida(0,15,10,"Deniz","Sida",10,10);                         ///Sida
-
-
     boolean OyuncuID; // 1 insan, 0 makine
     String OyuncuAdi;
     int skor;
@@ -38,7 +30,7 @@ public class Oyuncu
             random_int = random.nextInt(6);
             switch(random_int){ /// Random sayi atıyor buna göre oyuncu karakterinde kart dağıtımı yapılacak.
                 case 0:
-                    Playing_Cards.add(new Ucak(0,15,10,"Hava","Uçak",10));
+                    Playing_Cards.add(new Ucak(0,20,10,"Hava","Uçak",10));
                     break;
                 case 1:
                     Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5));
@@ -48,9 +40,9 @@ public class Oyuncu
                     break;
                 case 3:
                     if(card_score >= 20)
-                        Playing_Cards.add(new Siha(0,20,10,"Hava","Siha",10,20));
+                        Playing_Cards.add(new Siha(0,15,10,"Hava","Siha",10,20));
                     else
-                        Playing_Cards.add(new Ucak(0,15,10,"Hava","Uçak",10));
+                        Playing_Cards.add(new Ucak(0,20,10,"Hava","Uçak",10));
                     break;
                 case 4:
                     if(card_score >= 20)
