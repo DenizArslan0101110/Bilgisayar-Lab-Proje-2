@@ -135,12 +135,12 @@ public class Oyun
 
             int damageForPlayer = Player.Playing_Cards.get(Cards.get(i)).vurus;
             int damageForComputer = bilgisayar.Playing_Cards.get(Cards.get(i)).vurus;
-
+            System.out.println("Bilgisayar için değer : " +CardsForComputer.get(i));
             Player.Playing_Cards.get(Cards.get(i)).isUsed = true;
             bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).isUsed = true;
 
             System.out.println("Oyunucunun " + (i + 1) +". karti sudur : "+ Player.Playing_Cards.get(Cards.get(i)));
-            System.out.println("Bilgisayarin " + (i+1) +". karti sudur : "+ bilgisayar.Playing_Cards.get(Cards.get(i)));
+            System.out.println("Bilgisayarin " + (i+1) +". karti sudur : "+ bilgisayar.Playing_Cards.get(CardsForComputer.get(i)));
 
             ///Damage for player
 
