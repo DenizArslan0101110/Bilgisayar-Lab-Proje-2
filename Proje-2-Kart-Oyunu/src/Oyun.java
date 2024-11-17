@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Oyun
 {
     public static void main(String[] args)
     {
+        Scanner scanner = new Scanner(System.in);
         final int NUMBER_OF_CARDS = 6;
         int Turn_number = 0;
 
@@ -44,7 +46,14 @@ public class Oyun
 
         for (; Turn_number < 1 ; Turn_number++) {
 
-            SaldiriHesapla(Player,bilgisayar,1,2,3);
+            System.out.println("Kart numarasi giriniz: ");
+
+            int kart1 = scanner.nextInt();
+            int kart2 = scanner.nextInt();
+            int kart3 = scanner.nextInt();
+
+
+            SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3);
             Player.SkorGöster();
             bilgisayar.SkorGöster();
 
@@ -118,6 +127,8 @@ public class Oyun
         Cards = Player.kartSec(kart1,kart2,kart3);          ///Seçilen x,y,z kartlarini kart seç ile seç.
         CardsForComputer = bilgisayar.kartSec();            ///Üsttekinin aynısı ama bilgisayar hali bilgisayar random atama yapıyor.
 
+        System.out.println(Cards);
+        System.out.println(CardsForComputer);
 
 
         for (int i = 0; i < 3; i++) {       /// Her kartin karşısandakiyle savaşması için 3 kere dönüyor (sanirim)(sanırım değil ama yazması komik).
@@ -128,19 +139,22 @@ public class Oyun
             Player.Playing_Cards.get(Cards.get(i)).isUsed = true;
             bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).isUsed = true;
 
+            System.out.println("Oyunucunun " + (i + 1) +". karti sudur : "+ Player.Playing_Cards.get(Cards.get(i)));
+            System.out.println("Bilgisayarin " + (i+1) +". karti sudur : "+ bilgisayar.Playing_Cards.get(Cards.get(i)));
+
             ///Damage for player
 
-            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += (tempt).denizVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Ucak tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
+            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForPlayer += (tempt).denizVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Siha tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Ucak tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
 
-            if(Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += tempt.denizVurusAvantaji;
-            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Obus tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForComputer += tempt.denizVurusAvantaji;
+            if(Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForPlayer += tempt.denizVurusAvantaji;
+            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof KFS tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Obus tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof DenizAraclari) damageForPlayer += tempt.denizVurusAvantaji;
 
-            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForComputer += tempt.karaVurusAvantaji;
-            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
-            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Firkateyn tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForComputer += tempt.havaVurusAvantaji;
+            if(Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof KaraAraclari) damageForPlayer += tempt.karaVurusAvantaji;
+            else if (Player.Playing_Cards.get(Cards.get(i)) instanceof Sida tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
+            else if(Player.Playing_Cards.get(Cards.get(i)) instanceof Firkateyn tempt && Player.Playing_Cards.get(Cards.get(i)) instanceof HavaAraclari) damageForPlayer += tempt.havaVurusAvantaji;
 
             ///Damage for computer
 
@@ -160,16 +174,26 @@ public class Oyun
             int real_XP = bilgisayar.Playing_Cards.get(Cards.get(i)).seviyePuani;
             int real_XP1 = Player.Playing_Cards.get(Cards.get(i)).seviyePuani;
 
+            System.out.println("Insanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
+            System.out.println("Insanlarin dayanikliliği : " + bilgisayar.Playing_Cards.get(Cards.get(i)).dayaniklilik);
 
             int isDead = Player.Playing_Cards.get(Cards.get(i)).DurumGuncelle(damageForComputer,real_XP);        ///Xp ve hasar yolla
             int isDead1 = bilgisayar.Playing_Cards.get(Cards.get(i)).DurumGuncelle(damageForPlayer,real_XP1);         ///Xp ve hasar yolla
 
+            System.out.println("\nBilgisayar hasari sudur : " + damageForComputer);
+            System.out.println("Oyuncu hasari sudur : " +damageForPlayer);
+
+            System.out.println("\nInsanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
+            System.out.println("Insanlarin dayanikliliği : " + bilgisayar.Playing_Cards.get(Cards.get(i)).dayaniklilik);
+
             if(isDead == -1){
                 Player.Playing_Cards.remove(i);
+                System.out.print("\nOyuncu karti öldü !\n");
 
             }
             if(isDead1 == -1){
                 bilgisayar.Playing_Cards.remove(i);
+                System.out.print("\nBilgisayarin karti öldü !\n");
             }
 
         }

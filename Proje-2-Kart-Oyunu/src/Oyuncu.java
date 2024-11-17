@@ -38,31 +38,31 @@ public class Oyuncu
             random_int = random.nextInt(6);
             switch(random_int){ /// Random sayi atıyor buna göre oyuncu karakterinde kart dağıtımı yapılacak.
                 case 0:
-                    Playing_Cards.add(ucak);
+                    Playing_Cards.add(new Ucak(0,15,10,"Hava","Uçak",10));
                     break;
                 case 1:
-                    Playing_Cards.add(obus);
+                    Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5));
                     break;
                 case 2:
-                    Playing_Cards.add(firkateyn);
+                    Playing_Cards.add(new Firkateyn(0,25,10,"Deniz","Fırkateyn",5));
                     break;
                 case 3:
                     if(card_score >= 20)
-                        Playing_Cards.add(siha);
+                        Playing_Cards.add(new Siha(0,20,10,"Hava","Siha",10,20));
                     else
-                        Playing_Cards.add(ucak);
+                        Playing_Cards.add(new Ucak(0,15,10,"Hava","Uçak",10));
                     break;
                 case 4:
                     if(card_score >= 20)
-                        Playing_Cards.add(kfs);
+                        Playing_Cards.add(new KFS(0,10,10,"Kara","KFS",10,20));
                     else
-                        Playing_Cards.add(obus);
+                        Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5));
                     break;
                 case 5:
                     if(card_score >= 20)
-                        Playing_Cards.add(sida);
+                        Playing_Cards.add(new Sida(0,15,10,"Deniz","Sida",10,10));
                     else
-                        Playing_Cards.add(firkateyn);
+                        Playing_Cards.add(new Firkateyn(0,25,10,"Deniz","Fırkateyn",5));
                     break;
             }
         }
