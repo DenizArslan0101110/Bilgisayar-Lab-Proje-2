@@ -2,14 +2,16 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public class Oyun
 {
+    static int selected_card;
+    static int NumbersClicked = 0;
+
+
     public static void main(String[] args)
     {
-        Scanner scanner = new Scanner(System.in);
         final int NUMBER_OF_CARDS = 6;
         int Turn_number = 0;
 
@@ -22,10 +24,13 @@ public class Oyun
 
         Player.ShuffleCards(NUMBER_OF_CARDS);
         bilgisayar.ShuffleCards(NUMBER_OF_CARDS);
+
         System.out.println("Insanlarin kartlari :");
         Player.ShowCards(cardsinfo);
         System.out.println("Bilgisayarin kartlari :");
         bilgisayar.ShowCards(cardsinfo);
+
+
 
         // DO NOT REPLACE WITH LAMBDA PLEASE I DONT FUCKING KNOW WHAT A LAMBDA IS, IGNORE THE WARNING
         ActionListener screen_refresher = new ActionListener()
@@ -44,13 +49,35 @@ public class Oyun
 
 
 
-        for (; Turn_number < 5 ; Turn_number++) {
+        for (; Turn_number < 1 ; Turn_number++) {
+            NumbersClicked = 0;
 
             System.out.println("Kart numarasi giriniz: ");
+            int kart1 = 0;
+            int kart2 = 1;
+            int kart3 = 3;
+            while(NumbersClicked < 3)
+            {
+                if(NumbersClicked == 0){
+                    System.out.println("Kart 1 Seçiliyor");        ///COCONUT.JPG
+                    kart1 = selected_card;
+                    //System.out.println(kart1);
+                }
+                if(NumbersClicked == 1){
+                    System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
+                    kart2 = selected_card;
+                    //System.out.println(kart2);
+                }
+                if(NumbersClicked == 2){
+                    System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
+                    kart3 = selected_card;
+                    //System.out.println(kart3);
+                }
+            }
+            System.out.println(kart1 + " " + kart2 + " " + kart3);
 
-            int kart1 = scanner.nextInt();
-            int kart2 = scanner.nextInt();
-            int kart3 = scanner.nextInt();
+
+            System.out.println(kart1 +" "+kart2 +" "+kart3);
 
 
             SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3);
