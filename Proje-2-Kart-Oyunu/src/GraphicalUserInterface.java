@@ -12,17 +12,23 @@ public class GraphicalUserInterface extends JPanel
     JFrame window;
 
     private ArrayList<CardForGraphics> cardsinfo;
+    private ArrayList<CardForGraphics> framesonmap;
+    private ArrayList<CardForGraphics> safecardsinfo;
 
-    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo)
+    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo)
     {
         this.cardsinfo = cardsinfo;
+        this.framesonmap = framesonmap;
+        this.safecardsinfo = safecardsinfo;
         // JFrame basically our window
         this.window = new JFrame();                               // create frame
+        window.setBackground(Color.BLACK);
         window.setTitle("Kart Oyunu: Savaş Araçları");              // set title
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      // x button purpose
         window.setResizable(false);                                 // disable resize
         window.setSize(1366, 876);                                  // set size
         window.setVisible(true);                                    // make window visible
+
 
     }
 
@@ -30,8 +36,12 @@ public class GraphicalUserInterface extends JPanel
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        for (CardForGraphics cardsinfoii : cardsinfo) g.drawImage(cardsinfoii.image, cardsinfoii.display_x_pos, cardsinfoii.display_y_pos, null);
+
+        for (CardForGraphics card : safecardsinfo) g.drawImage(card.image, card.display_x_pos, card.display_y_pos, null);
+
+        for (CardForGraphics fr : framesonmap) g.drawImage(fr.image, fr.display_x_pos, fr.display_y_pos, null);
     }
+
 
     public static ArrayList<CardForGraphics> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo)
     {
@@ -97,5 +107,17 @@ public class GraphicalUserInterface extends JPanel
         graphic.drawRenderedImage(cardsinfo.image, null);
         graphic.dispose();
         return rotated;
+    }
+
+    public static BufferedImage ApplyTransparency(CardForGraphics card, float ghosting_val)
+    {
+        BufferedImage dest = new BufferedImage(card.image.getWidth(), card.image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphic = dest.createGraphics();
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.DST_OVER, ghosting_val);
+        graphic.setComposite(ac);
+        graphic.drawImage(card.image, 0, 0, null);
+        graphic.dispose();
+        return dest;
     }
 }

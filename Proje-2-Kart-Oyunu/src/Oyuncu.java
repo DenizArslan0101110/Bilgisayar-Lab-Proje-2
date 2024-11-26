@@ -59,30 +59,31 @@ public class Oyuncu
             }
         }
     }
-    public void ShowCards(ArrayList<CardForGraphics> cardsinfo)
+
+    public void CopyCards(ArrayList<CardForGraphics> cardsinfo)
     {
-        short kaydir = 0;
+        byte iforplayer=0;
+        byte iforpc=0;
         for (SavasAraclari playingCard : Playing_Cards)
         {
-            if (playingCard instanceof Ucak tempt)
+            if (playingCard instanceof Ucak tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID));
-                if(this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID));
-                System.out.println(tempt.altSinif);
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforplayer++;}
+                System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
-            else if (playingCard instanceof Obus tempt)
+            else if (playingCard instanceof Obus tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID));
-                if(this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID));
-                System.out.println(tempt.altSinif);
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforplayer++;}
+                System.out.println(this.OyuncuID+" "+tempt.altSinif+playingCard.dayaniklilik);
             }
-            else if (playingCard instanceof Firkateyn tempt)
+            else if (playingCard instanceof Firkateyn tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)50, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID));
-                if(this.OyuncuID) cardsinfo.add(new CardForGraphics((short)(250+kaydir), (short)650, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID));
-                System.out.println(tempt.altSinif);
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforplayer++;}
+                System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
-            kaydir += 150;
         }
         // yalan söylüyo warning bu arada, bu fonksiyon basbaya ekleme yapıyo yapmasa kod patlar
         //cardsinfo = GraphicalUserInterface.fillImagesInAccordanceToTheirInfo(cardsinfo);
@@ -100,6 +101,8 @@ public class Oyuncu
         return isChosen;
     }
 
+    // DEPRECATED
+    /*
     public ArrayList<Integer> kartSec(){                         /// Bilgisayar için kart seç.
         LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
 
@@ -108,13 +111,38 @@ public class Oyuncu
         }
         ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
         return isChosen;
-    }
+    }*/
 
-    public void SkorGöster(){
+    public void SkorGoster(){
         for (int i = 0; i < Playing_Cards.size(); i++) {
             card_score += Playing_Cards.get(i).seviyePuani;
         }
 
         //return skor;      /// Normalde return değeri vardi yedim onu.
     }
+
+    public static void SendCardToWar(int index_in_deck, int index_in_battle, ArrayList<CardForGraphics> cardsinfo, byte turn_number)
+    {
+    // note to future seld, CFG is singular cards type, card is singular card, cardsinfo is the whole deck including everything on screen
+        for(CardForGraphics card : cardsinfo)
+        {
+            if(card.owners_ID && card.index_in_deck == index_in_deck)
+            {
+                card.SetYPos((short)435);
+                card.SetXPos((short)(335+index_in_battle*150));
+                card.SetRotation(0);
+                card.in_battle_rn = true;
+                card.last_used = turn_number;
+            }
+            else if(!card.owners_ID && card.index_in_deck == index_in_deck)
+            {
+                card.SetYPos((short)235);
+                card.SetXPos((short)(335+index_in_battle*150));
+                card.SetRotation(0);
+                card.in_battle_rn = true;
+                card.last_used = turn_number;
+            }
+        }
+    }
+
 }
