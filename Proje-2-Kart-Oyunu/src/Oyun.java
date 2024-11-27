@@ -6,14 +6,10 @@ import java.util.*;
 
 public class Oyun
 {
-    public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
     static int selected_card;
     static int NumbersClicked = 0;
-
-
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
         final int NUMBER_OF_CARDS = 6;
         byte Turn_number = 1;
 
@@ -69,51 +65,83 @@ public class Oyun
             int kart1 = 0;
             int kart2 = 1;
             int kart3 = 3;
-            while(NumbersClicked < 3)
-            {
-                if(NumbersClicked == 0){
-                    System.out.println("Kart 1 Seçiliyor");        ///COCONUT.JPG
-                    kart1 = selected_card;
-                    //System.out.println(kart1);
-                }
-                if(NumbersClicked == 1){
-                    System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
-                    kart2 = selected_card;
-                    //System.out.println(kart2);
-                }
-                if(NumbersClicked == 2){
-                    System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
-                    kart3 = selected_card;
-                    //System.out.println(kart3);
-                }
-            }
-            System.out.println(kart1 + " " + kart2 + " " + kart3);
 
-
-            // dont touch it explodes if touch
             LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
             while(isChosen1.size() < 3) isChosen1.add(random.nextInt(bilgisayar.Playing_Cards.size()));
             ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
 
-            // below is where we send killing machines to war
-            int kart1 = scanner.nextInt();
-            //screen_refresh_timer.stop();
-            Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number,true);
-            Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
-            //screen_refresh_timer.start();
+            while(NumbersClicked < 3)
+            {
+                if(NumbersClicked == 0)
+                {
+                    System.out.println("Kart 1 Seçiliyor");        ///COCONUT.JPG
+                    kart1 = selected_card;
+                    for(CardForGraphics card: cardsinfo)
+                    {
+                        if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
+                        {
+                            card.is_selected_rn=true;
+                        }
+                        else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
+                    }
 
-
-            int kart2 = scanner.nextInt();
-            //screen_refresh_timer.stop();
-            Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number,true);
-            Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
-            //screen_refresh_timer.start();
-
-
-            int kart3 = scanner.nextInt();
-            //screen_refresh_timer.stop();
+                    //System.out.println(kart1);
+                }
+                if(NumbersClicked == 1)
+                {
+                    Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number,true);
+                    Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
+                    System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
+                    kart2 = selected_card;
+                    for(CardForGraphics card: cardsinfo)
+                    {
+                        if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
+                        {
+                            card.is_selected_rn=true;
+                        }
+                        else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
+                    }
+                    //System.out.println(kart2);
+                }
+                if(NumbersClicked == 2)
+                {
+                    Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number,true);
+                    Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
+                    System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
+                    kart3 = selected_card;
+                    for(CardForGraphics card: cardsinfo)
+                    {
+                        if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
+                        {
+                            card.is_selected_rn=true;
+                        }
+                        else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
+                    }
+                    //System.out.println(kart3);
+                }
+            }
+            for(CardForGraphics card: cardsinfo) card.is_selected_rn = false;
             Oyuncu.SendCardToWar(kart3,3,cardsinfo,Turn_number,true);
             Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,Turn_number,false);
+            System.out.println(kart1 + " " + kart2 + " " + kart3);
+
+
+            // dont touch it explodes if touch
+
+            // below is where we send killing machines to war
+            //kart1 = scanner.nextInt();
+            //screen_refresh_timer.stop();
+            //screen_refresh_timer.start();
+
+
+            //kart2 = scanner.nextInt();
+            //screen_refresh_timer.stop();
+
+            //screen_refresh_timer.start();
+
+
+            //kart3 = scanner.nextInt();
+            //screen_refresh_timer.stop();
             //screen_refresh_timer.start();
 
             System.out.println(kart1 +" "+kart2 +" "+kart3);
@@ -194,7 +222,8 @@ public class Oyun
         byte dealers_deck_size = 0;
         byte iforplayer = 0;
         byte ifordealer = 0;
-        for (CardForGraphics card : cardsinfo) {
+        for (CardForGraphics card : cardsinfo)
+        {
             if (card.owners_id && !card.in_battle_rn) players_deck_size++;
             else if (!card.owners_id && !card.in_battle_rn) dealers_deck_size++;
         }
@@ -202,7 +231,8 @@ public class Oyun
         byte angle_increment_dealer = 90;
         if(players_deck_size!=0) angle_increment_player = (byte)(90/players_deck_size);
         if(dealers_deck_size!=0) angle_increment_dealer = (byte)(90/dealers_deck_size);
-        for (CardForGraphics card : cardsinfo) {
+        for (CardForGraphics card : cardsinfo)
+        {
             if (card.owners_id && !card.in_battle_rn) {
 
                 card.SetXPos((short) (663 - (30 * players_deck_size) + (iforplayer * 60)));
@@ -218,6 +248,10 @@ public class Oyun
                 //cardsinfo.get(i).AddToRotation(180);
                 ifordealer++;
             }
+        }
+        for (CardForGraphics card : cardsinfo)
+        {
+            if(card.is_selected_rn) card.SetYPos((short)(card.y_pos-50));
         }
     }
 

@@ -56,20 +56,23 @@ public class GraphicalUserInterface extends JPanel
 
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                if(k == 0){
-                    for(CardForGraphics i :cardsinfo){
-                        if(i.owners_ID == true){
+                if(k == 0)
+                {
+                    for(CardForGraphics card :cardsinfo){
+                        if(card.owners_id){
                             CardsNumber++;
                         }
                     }
                     k++;
                 }
-                if(e.getWheelRotation() < 0){
+                if(e.getWheelRotation() < 0)
+                {
                     if(Oyun.selected_card < CardsNumber - 1)
                         Oyun.selected_card++;
                     System.out.println(Oyun.selected_card);
                 }
-                else{
+                else if(e.getWheelRotation() > 0)
+                {
                     if(Oyun.selected_card > 0)
                         Oyun.selected_card--;
                     System.out.println(Oyun.selected_card);
