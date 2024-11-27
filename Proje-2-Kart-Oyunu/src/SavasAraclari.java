@@ -4,14 +4,14 @@ abstract class SavasAraclari
     public int seviyePuani;
     public int vurus;
     public String sinif;
-    public byte last_used;
+    public boolean is_used;
 
     public SavasAraclari(int seviyePuani,int dayaniklilik,int vurus,String sinif){
         this.dayaniklilik= dayaniklilik;
         this.seviyePuani = seviyePuani;
         this.vurus = vurus;
         this.sinif = sinif;
-        this.last_used = -50;
+        this.is_used = false;
     }
     public void Stat_Goster(){
         System.out.println(dayaniklilik);

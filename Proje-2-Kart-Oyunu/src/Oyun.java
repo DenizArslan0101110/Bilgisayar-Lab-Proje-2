@@ -46,53 +46,71 @@ public class Oyun
             }
         };
 
-        Timer screen_refresh_timer = new Timer(1000/1000, screen_refresher);
+        Timer screen_refresh_timer = new Timer(1000/60, screen_refresher);
         screen_refresh_timer.start();
 
 
-
-        for (; Turn_number < 50 ; Turn_number++)
+        // marks the main game loop
+        for (; Turn_number < 50 ;Turn_number++)
         {
             CardForGraphics.turn_number = Turn_number;
 
             System.out.println("Kart numarasi giriniz: ");
 
-            int kart1 = scanner.nextInt();
-            Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number);
-            int kart2 = scanner.nextInt();
-            Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number);
-            int kart3 = scanner.nextInt();
-            Oyuncu.SendCardToWar(kart3,3,cardsinfo,Turn_number);
 
-
+            // dont touch it explodes if touch
             LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
-
-            while(isChosen1.size() < 3) {
-                isChosen1.add(random.nextInt(bilgisayar.Playing_Cards.size()));
-            }
+            while(isChosen1.size() < 3) isChosen1.add(random.nextInt(bilgisayar.Playing_Cards.size()));
             ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
 
+            // below is where we send killing machines to war
+            int kart1 = scanner.nextInt();
+            //screen_refresh_timer.stop();
+            Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number,true);
+            Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
+            //screen_refresh_timer.start();
+
+
+            int kart2 = scanner.nextInt();
+            //screen_refresh_timer.stop();
+            Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number,true);
+            Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
+            //screen_refresh_timer.start();
+
+
+            int kart3 = scanner.nextInt();
+            //screen_refresh_timer.stop();
+            Oyuncu.SendCardToWar(kart3,3,cardsinfo,Turn_number,true);
+            Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,Turn_number,false);
+            //screen_refresh_timer.start();
+
+            Thread.sleep(4000);
+
+            // JsonBitirici'nin torunu
             SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3,isChosen.get(0),isChosen.get(1),isChosen.get(2), Turn_number);
+
+            // give them a break they did their best
+            Oyuncu.SendCardBackHome(kart1,cardsinfo);
+            Oyuncu.SendCardBackHome(kart2,cardsinfo);
+            Oyuncu.SendCardBackHome(kart3,cardsinfo);
+
+            // fucking kill those who havent tried hard enough
             FuckingKill(Player,bilgisayar);
             Player.SkorGoster();
             bilgisayar.SkorGoster();
 
-            if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty()){
-                Player.ShuffleCards(3-Player.Playing_Cards.size());
-                break;
-            }
+            // below is where we humiliate the loser with extra cards
+            if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty()) Player.ShuffleCards(3-Player.Playing_Cards.size());
             else Player.ShuffleCards(1);
 
-
-            if(bilgisayar.Playing_Cards.size() < 3 && !bilgisayar.Playing_Cards.isEmpty()){
-                bilgisayar.ShuffleCards(3-bilgisayar.Playing_Cards.size());
-                break;
-            }
+            if(bilgisayar.Playing_Cards.size() < 3 && !bilgisayar.Playing_Cards.isEmpty()) bilgisayar.ShuffleCards(3-bilgisayar.Playing_Cards.size());
             else bilgisayar.ShuffleCards(1);
 
+
+            // we kindly ask the universe to stop so we can sort shit out
             screen_refresh_timer.stop();
 
-            Thread.sleep(100);
+            Thread.sleep(100); // coconut.jpg, reality breaks if you remove this
 
             cardsinfo.clear();
             Player.CopyCards(cardsinfo);
@@ -101,6 +119,7 @@ public class Oyun
             safecardsinfo.addAll(cardsinfo);
 
             screen_refresh_timer.start();
+            // universe starts back up, feelin refreshed
 
 
         }
@@ -112,14 +131,17 @@ public class Oyun
 
     }
 
+    //public static void MaintenanceTimeStop()
+
+    // reloads and rotates the images according to their stats
     public static void ReloadImages(ArrayList<CardForGraphics> cardsinfo)
     {
-        boolean lift_the_veil = true;
+        boolean lift_the_veil_player = true;
         for(CardForGraphics card : cardsinfo)
         {
-            if(!card.in_battle_rn && card.last_used <= 0)
+            if(!card.in_battle_rn && !card.used_or_not && card.owners_id)
             {
-                lift_the_veil = false;
+                lift_the_veil_player = false;
                 break;
             }
         }
@@ -127,48 +149,45 @@ public class Oyun
         {
             card.image = GraphicalUserInterface.loadbimg(card.path);
             card.image = GraphicalUserInterface.rotate(card.rotation, card);
-            if(card.last_used > 0) card.image = GraphicalUserInterface.ApplyTransparency(card, 0.5F);
-            if(card.in_battle_rn) card.image = GraphicalUserInterface.ApplyTransparency(card, 1.0F);
-            if(lift_the_veil) card.image = GraphicalUserInterface.ApplyTransparency(card, 1.0F);
+            if(card.used_or_not && !card.in_battle_rn && !lift_the_veil_player && card.owners_id) card.image = GraphicalUserInterface.ApplyTransparency(card, 0.5F);
         }
     }
 
+    // simply enough, it forces the cards into a deck formation on both sides, ignores the cards that have been played this turn
     public static void OrderCardsIntoADeck(ArrayList<CardForGraphics> cardsinfo)
     {
         byte players_deck_size = 0;
         byte dealers_deck_size = 0;
         byte iforplayer = 0;
         byte ifordealer = 0;
-        for(byte i=0; i<cardsinfo.size() ;i++)
-        {
-            if(cardsinfo.get(i).owners_ID && !cardsinfo.get(i).in_battle_rn) players_deck_size++;
-            else if(!cardsinfo.get(i).owners_ID && !cardsinfo.get(i).in_battle_rn)dealers_deck_size++;
+        for (CardForGraphics card : cardsinfo) {
+            if (card.owners_id && !card.in_battle_rn) players_deck_size++;
+            else if (!card.owners_id && !card.in_battle_rn) dealers_deck_size++;
         }
-        byte angle_increment_player = (byte)(90/players_deck_size);
-        byte angle_increment_dealer = (byte)(90/dealers_deck_size);
-        for(byte i=0; i<cardsinfo.size() ;i++)
-        {
-            if(cardsinfo.get(i).owners_ID && !cardsinfo.get(i).in_battle_rn)
-            {
+        byte angle_increment_player = 90;
+        byte angle_increment_dealer = 90;
+        if(players_deck_size!=0) angle_increment_player = (byte)(90/players_deck_size);
+        if(dealers_deck_size!=0) angle_increment_dealer = (byte)(90/dealers_deck_size);
+        for (CardForGraphics card : cardsinfo) {
+            if (card.owners_id && !card.in_battle_rn) {
 
-                cardsinfo.get(i).SetXPos((short)(663 - (30*players_deck_size)+(iforplayer*60)));
-                cardsinfo.get(i).SetYPos((short)(638 + (Math.pow(Math.abs(cardsinfo.get(i).rotation/3), 1.7) ) ) );
-                cardsinfo.get(i).SetRotation(-45+((iforplayer+0.5)*angle_increment_player));
+                card.SetXPos((short) (663 - (30 * players_deck_size) + (iforplayer * 60)));
+                card.SetYPos((short) (638 + (Math.pow(Math.abs(card.rotation / 3), 1.7))));
+                card.SetRotation(-45 + ((iforplayer + 0.5) * angle_increment_player));
                 //cardsinfo.get(i).AddToRotation(180);
                 iforplayer++;
-            }
-            else if(!cardsinfo.get(i).owners_ID && !cardsinfo.get(i).in_battle_rn)
-            {
+            } else if (!card.owners_id && !card.in_battle_rn) {
 
-                cardsinfo.get(i).SetXPos((short)(603 + (30*dealers_deck_size)-(ifordealer*60)));
-                cardsinfo.get(i).SetYPos((short)(50 - (Math.pow(Math.abs((180-cardsinfo.get(i).rotation)/3), 1.7) ) ) );
-                cardsinfo.get(i).SetRotation(-45+180+(ifordealer+0.5)*angle_increment_dealer);
+                card.SetXPos((short) (603 + (30 * dealers_deck_size) - (ifordealer * 60)));
+                card.SetYPos((short) (50 - (Math.pow(Math.abs((180 - card.rotation) / 3), 1.7))));
+                card.SetRotation(-45 + 180 + (ifordealer + 0.5) * angle_increment_dealer);
                 //cardsinfo.get(i).AddToRotation(180);
                 ifordealer++;
             }
         }
     }
 
+    // bigass function
     public static void SaldiriHesapla(Oyuncu Player,Oyuncu bilgisayar,int kart1 ,int kart2 ,int kart3, int pckart1, int pckart2, int pckart3, byte turn)
     {
         ArrayList<Integer> Cards = new ArrayList<>();           ///Hangi sayilari seçtiğimi tutmak için liste
@@ -193,8 +212,8 @@ public class Oyun
             int damageForPlayer = Player.Playing_Cards.get(Cards.get(i)).vurus;
             int damageForComputer = bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).vurus;
 
-            Player.Playing_Cards.get(Cards.get(i)).last_used = turn;
-            bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).last_used = turn;
+            Player.Playing_Cards.get(Cards.get(i)).is_used = true;
+            bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).is_used = true;
 
             System.out.println("Oyunucunun " + (i + 1) +". karti sudur : "+ Player.Playing_Cards.get(Cards.get(i)));
             Player.Playing_Cards.get(Cards.get(i)).Stat_Goster();
@@ -246,21 +265,10 @@ public class Oyun
 
             System.out.println("\nInsanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
             System.out.println("Bilgisayin dayanikliliği : " + bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).dayaniklilik);
-
-            /*if(isDead == -1){
-                // player remove x tarzı bişe ekleyip for loop bittikten sonra bütün kartları aynı anda kaldıralım remove ile
-                Player.Playing_Cards.remove((int)Cards.get(i));
-                System.out.print("\nOyuncu karti öldü !\n");
-
-            }
-            if(isDead1 == -1){
-                bilgisayar.Playing_Cards.remove((int)CardsForComputer.get(i));
-                System.out.print("\nBilgisayarin karti öldü !\n");
-            }*/
-
         }
     }
 
+    // this one might be killing Im not too sure tho
     public static void FuckingKill(Oyuncu Player, Oyuncu bilgisayar)
     {
         for(byte i = (byte)(Player.Playing_Cards.size()-1); i >= 0 ;i--)
@@ -282,6 +290,7 @@ public class Oyun
         }
     }
 
+    // displays 6 card selection slots on map (yes its by hand Im not making a for loop with 3 elements)
     public static void MakeFramesOnMap(ArrayList<CardForGraphics> framesonmap)
     {
         framesonmap.add(new CardForGraphics((short)483, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));

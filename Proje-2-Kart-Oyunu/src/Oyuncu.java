@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -8,7 +9,7 @@ public class Oyuncu
     Random random = new Random();
 
 
-    boolean OyuncuID; // 1 insan, 0 makine
+    boolean OyuncuID; // true insan, false makine
     String OyuncuAdi;
     int skor;
     int card_score = 0;
@@ -68,20 +69,20 @@ public class Oyuncu
         {
             if (playingCard instanceof Ucak tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforpc++;}
-                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforplayer++;}
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "ucak", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", "ucak", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforplayer++;}
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
             else if (playingCard instanceof Obus tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforpc++;}
-                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforplayer++;}
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "obus", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", "obus", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforplayer++;}
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+playingCard.dayaniklilik);
             }
             else if (playingCard instanceof Firkateyn tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforpc++;}
-                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.last_used, false));iforplayer++;}
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "firkateyn", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", "firkateyn", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforplayer++;}
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
         }
@@ -97,8 +98,7 @@ public class Oyuncu
         isChosen1.add(y);
         isChosen1.add(z);
 
-        ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
-        return isChosen;
+        return new ArrayList<>(isChosen1);
     }
 
     // DEPRECATED
@@ -113,35 +113,66 @@ public class Oyuncu
         return isChosen;
     }*/
 
-    public void SkorGoster(){
-        for (int i = 0; i < Playing_Cards.size(); i++) {
+    public void SkorGoster()
+    {
+        for (int i = 0; i < Playing_Cards.size(); i++)
+        {
             card_score += Playing_Cards.get(i).seviyePuani;
         }
 
-        //return skor;      /// Normalde return değeri vardi yedim onu.
+        //return skor;      /// Normalde return değeri vardi yedim onu.      // afied
     }
 
-    public static void SendCardToWar(int index_in_deck, int index_in_battle, ArrayList<CardForGraphics> cardsinfo, byte turn_number)
+    public static void SendCardToWar(int index_in_deck, int index_in_battle, ArrayList<CardForGraphics> cardsinfo, byte turn_number, boolean player_called_this)
     {
     // note to future seld, CFG is singular cards type, card is singular card, cardsinfo is the whole deck including everything on screen
         for(CardForGraphics card : cardsinfo)
         {
-            if(card.owners_ID && card.index_in_deck == index_in_deck)
+            if(player_called_this && card.index_in_deck == index_in_deck && card.owners_id)
             {
                 card.SetYPos((short)435);
                 card.SetXPos((short)(335+index_in_battle*150));
                 card.SetRotation(0);
                 card.in_battle_rn = true;
-                card.last_used = turn_number;
+                card.used_or_not = true;
             }
-            else if(!card.owners_ID && card.index_in_deck == index_in_deck)
+            else if(!player_called_this && card.index_in_deck == index_in_deck && !card.owners_id)
             {
+
                 card.SetYPos((short)235);
                 card.SetXPos((short)(335+index_in_battle*150));
                 card.SetRotation(0);
                 card.in_battle_rn = true;
-                card.last_used = turn_number;
+                card.used_or_not = true;
+                card.path = ReturnPath(card.machine_id);
             }
+        }
+    }
+
+    public static String ReturnPath(String machine_id)
+    {
+        return switch (machine_id) {
+            case "ucak" -> "Visual/uçak.png";
+            case "obus" -> "Visual/obüs.png";
+            case "firkateyn" -> "Visual/fırkateyn.png";
+            case "siha" -> "Visual/siha.png";
+            case "kfs" -> "Visual/KFS.png";
+            case "sida" -> "Visual/sida.png";
+            default -> "null";
+        };
+    }
+
+    public static void SendCardBackHome(int index_in_deck, ArrayList<CardForGraphics> cardsinfo)
+    {
+        for(CardForGraphics card : cardsinfo)
+        {
+            if      (card.owners_id && card.index_in_deck == index_in_deck)     card.in_battle_rn = false;
+            else if (!card.owners_id && card.index_in_deck == index_in_deck)
+            {
+                card.in_battle_rn = false;
+                card.path = "Visuals/backside.png";
+            }
+
         }
     }
 
