@@ -1,5 +1,10 @@
+import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +13,10 @@ import javax.imageio.ImageIO;
 
 public class GraphicalUserInterface extends JPanel
 {
-
+    int Player_card_number;
+    int CardsNumber;
     JFrame window;
+
 
     private ArrayList<CardForGraphics> cardsinfo;
     private ArrayList<CardForGraphics> framesonmap;
@@ -29,6 +36,47 @@ public class GraphicalUserInterface extends JPanel
         window.setSize(1366, 876);                                  // set size
         window.setVisible(true);                                    // make window visible
 
+        window.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+            @Override public void mousePressed(MouseEvent e) {
+                Oyun.NumbersClicked++;
+                //System.out.println("AAAAAAAAAAAAA; " + Oyun.NumbersClicked);
+
+            }
+            @Override public void mouseReleased(MouseEvent e) {}
+            @Override public void mouseEntered(MouseEvent e) {}
+            @Override public void mouseExited(MouseEvent e) {}
+        });
+        window.addMouseWheelListener(new MouseWheelListener() {
+            int k = 0;
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if(k == 0){
+                    for(CardForGraphics i :cardsinfo){
+                        if(i.owners_ID == true){
+                            CardsNumber++;
+                        }
+                    }
+                    k++;
+                }
+                if(e.getWheelRotation() < 0){
+                    if(Oyun.selected_card < CardsNumber - 1)
+                        Oyun.selected_card++;
+                    System.out.println(Oyun.selected_card);
+                }
+                else{
+                    if(Oyun.selected_card > 0)
+                        Oyun.selected_card--;
+                    System.out.println(Oyun.selected_card);
+                }
+            }
+        });
+
 
     }
 
@@ -41,7 +89,6 @@ public class GraphicalUserInterface extends JPanel
 
         for (CardForGraphics fr : framesonmap) g.drawImage(fr.image, fr.display_x_pos, fr.display_y_pos, null);
     }
-
 
     public static ArrayList<CardForGraphics> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo)
     {

@@ -8,6 +8,12 @@ public class Oyun
 {
     public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
+    static int selected_card;
+    static int NumbersClicked = 0;
+
+
+    public static void main(String[] args)
+    {
         final int NUMBER_OF_CARDS = 6;
         byte Turn_number = 1;
 
@@ -25,12 +31,15 @@ public class Oyun
 
         Player.ShuffleCards(NUMBER_OF_CARDS);
         bilgisayar.ShuffleCards(NUMBER_OF_CARDS);
+
         System.out.println("Insanlarin kartlari :");
         Player.CopyCards(cardsinfo);
         System.out.println("Bilgisayarin kartlari :");
         bilgisayar.CopyCards(cardsinfo);
 
         safecardsinfo.addAll(cardsinfo);
+
+
 
 
         // DO NOT REPLACE WITH LAMBDA PLEASE I DONT FUCKING KNOW WHAT A LAMBDA IS, IGNORE THE WARNING
@@ -51,11 +60,34 @@ public class Oyun
 
 
         // marks the main game loop
-        for (; Turn_number < 50 ;Turn_number++)
+        for (; Turn_number < 50 ; Turn_number++)
         {
             CardForGraphics.turn_number = Turn_number;
+            NumbersClicked = 0;
 
             System.out.println("Kart numarasi giriniz: ");
+            int kart1 = 0;
+            int kart2 = 1;
+            int kart3 = 3;
+            while(NumbersClicked < 3)
+            {
+                if(NumbersClicked == 0){
+                    System.out.println("Kart 1 Seçiliyor");        ///COCONUT.JPG
+                    kart1 = selected_card;
+                    //System.out.println(kart1);
+                }
+                if(NumbersClicked == 1){
+                    System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
+                    kart2 = selected_card;
+                    //System.out.println(kart2);
+                }
+                if(NumbersClicked == 2){
+                    System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
+                    kart3 = selected_card;
+                    //System.out.println(kart3);
+                }
+            }
+            System.out.println(kart1 + " " + kart2 + " " + kart3);
 
 
             // dont touch it explodes if touch
@@ -83,6 +115,8 @@ public class Oyun
             Oyuncu.SendCardToWar(kart3,3,cardsinfo,Turn_number,true);
             Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,Turn_number,false);
             //screen_refresh_timer.start();
+
+            System.out.println(kart1 +" "+kart2 +" "+kart3);
 
             Thread.sleep(4000);
 
