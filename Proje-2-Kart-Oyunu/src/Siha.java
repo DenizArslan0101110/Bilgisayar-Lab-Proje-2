@@ -26,9 +26,9 @@ public class Siha extends HavaAraclari
             }
             else
                 seviyePuani += xp;
-            return -1;
+            return seviyePuani;
         }
         else
-            return 1;
+            return 0;
     }
 }

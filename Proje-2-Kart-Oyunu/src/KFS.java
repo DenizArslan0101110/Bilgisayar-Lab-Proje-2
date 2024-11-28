@@ -22,10 +22,10 @@ public class KFS extends KaraAraclari
             }
             else
                 seviyePuani += xp;
-            return -1;
+            return seviyePuani;
         }
 
         else
-            return 1;
+            return 0;
     }
 }

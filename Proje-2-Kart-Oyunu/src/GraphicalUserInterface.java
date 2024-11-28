@@ -1,3 +1,5 @@
+import com.sun.tools.javac.Main;
+
 import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
@@ -18,12 +20,14 @@ public class GraphicalUserInterface extends JPanel
     JFrame window;
 
 
+    private ArrayList<SavasAraclari> PlayingCards;
     private ArrayList<CardForGraphics> cardsinfo;
     private ArrayList<CardForGraphics> framesonmap;
     private ArrayList<CardForGraphics> safecardsinfo;
 
-    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo)
+    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo, ArrayList<SavasAraclari> PlayingCards)
     {
+        this.PlayingCards = PlayingCards;
         this.cardsinfo = cardsinfo;
         this.framesonmap = framesonmap;
         this.safecardsinfo = safecardsinfo;
@@ -53,28 +57,60 @@ public class GraphicalUserInterface extends JPanel
         });
         window.addMouseWheelListener(new MouseWheelListener() {
             int k = 0;
-
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                if(k == 0)
-                {
+                //if(k == 0)
+                //{
+                    CardsNumber = 0;
                     for(CardForGraphics card :cardsinfo){
                         if(card.owners_id){
                             CardsNumber++;
                         }
                     }
-                    k++;
-                }
+                   // k++;
+               // }
                 if(e.getWheelRotation() < 0)
                 {
-                    if(Oyun.selected_card < CardsNumber - 1)
+                    if(Oyun.selected_card < CardsNumber - 1){
                         Oyun.selected_card++;
+                        while(PlayingCards.get(Oyun.selected_card).is_used == true){
+                            if(Oyun.selected_card < CardsNumber - 1)
+                                Oyun.selected_card++;
+                            else
+                                Oyun.selected_card = 0;
+                        }
+                    }
+                    else {
+                        Oyun.selected_card = 0;
+                        while (PlayingCards.get(Oyun.selected_card).is_used == true) {
+                            if (Oyun.selected_card < CardsNumber - 1)
+                                Oyun.selected_card++;
+                        }
+                    }
+
+
                     System.out.println(Oyun.selected_card);
                 }
                 else if(e.getWheelRotation() > 0)
                 {
-                    if(Oyun.selected_card > 0)
+                    if(Oyun.selected_card > 0){
                         Oyun.selected_card--;
+                        while(PlayingCards.get(Oyun.selected_card).is_used == true) {
+                            if(Oyun.selected_card > 0)
+                                Oyun.selected_card--;
+                            else
+                                Oyun.selected_card = CardsNumber - 1;
+                        }
+                    }
+                    else {
+                        Oyun.selected_card = CardsNumber - 1;
+                        while (PlayingCards.get(Oyun.selected_card).is_used == true) {
+                            if (Oyun.selected_card > 0)
+                                Oyun.selected_card--;
+
+                        }
+                    }
+
                     System.out.println(Oyun.selected_card);
                 }
             }

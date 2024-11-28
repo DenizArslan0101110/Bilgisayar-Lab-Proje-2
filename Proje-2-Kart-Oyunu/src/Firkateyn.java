@@ -18,10 +18,10 @@ public class Firkateyn extends DenizAraclari
             }
             else
                 seviyePuani += xp;
-            return -1;
+            return seviyePuani;
         }
 
         else
-            return 1;
+            return 0;
     }
 }
