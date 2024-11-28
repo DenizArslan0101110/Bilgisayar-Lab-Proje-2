@@ -124,20 +124,12 @@ public class GraphicalUserInterface extends JPanel
     {
         super.paintComponent(g);
 
+        for (CardForGraphics fr : framesonmap) g.drawImage(fr.image, fr.display_x_pos, fr.display_y_pos, null);
+
         for (CardForGraphics card : safecardsinfo) g.drawImage(card.image, card.display_x_pos, card.display_y_pos, null);
 
-        for (CardForGraphics fr : framesonmap) g.drawImage(fr.image, fr.display_x_pos, fr.display_y_pos, null);
-    }
 
-    public static ArrayList<CardForGraphics> fillImagesInAccordanceToTheirInfo(ArrayList<CardForGraphics> cardsinfo)
-    {
-        for (CardForGraphics cardsinfoii : cardsinfo) {
-            cardsinfoii.set_Image(loadbimg(cardsinfoii.path));
-            cardsinfoii.image = rotate(cardsinfoii.rotation, cardsinfoii);
-        }
-        return cardsinfo;
     }
-
 
     // method for loading a buffered image with a specific jpg file
     public static BufferedImage loadbimg(String path)
@@ -205,5 +197,25 @@ public class GraphicalUserInterface extends JPanel
         graphic.drawImage(card.image, 0, 0, null);
         graphic.dispose();
         return dest;
+    }
+
+    public static BufferedImage scale(BufferedImage src, int w, int h)
+    {
+        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        int x, y;
+        int ww = src.getWidth();
+        int hh = src.getHeight();
+        int[] ys = new int[h];
+        for (y = 0; y < h; y++) ys[y] = y * hh / h;
+        for (x = 0; x < w; x++)
+        {
+            int newX = x * ww / w;
+            for (y = 0; y < h; y++)
+            {
+                int col = src.getRGB(newX, ys[y]);
+                img.setRGB(x, y, col);
+            }
+        }
+        return img;
     }
 }
