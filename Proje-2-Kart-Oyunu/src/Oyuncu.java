@@ -69,20 +69,20 @@ public class Oyuncu
         {
             if (playingCard instanceof Ucak tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "ucak", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforpc++;}
-                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", "ucak", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforplayer++;}
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "ucak", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, (byte)playingCard.seviyePuani, (byte)playingCard.vurus, playingCard.is_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/uçak.png", "ucak", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, (byte)playingCard.seviyePuani, (byte)playingCard.vurus, playingCard.is_used, false));iforplayer++;}
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
             else if (playingCard instanceof Obus tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "obus", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforpc++;}
-                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", "obus", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforplayer++;}
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "obus", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, (byte)playingCard.seviyePuani, (byte)playingCard.vurus, playingCard.is_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/obüs.png", "obus", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, (byte)playingCard.seviyePuani, (byte)playingCard.vurus, playingCard.is_used, false));iforplayer++;}
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+playingCard.dayaniklilik);
             }
             else if (playingCard instanceof Firkateyn tempt && playingCard.dayaniklilik>0)
             {
-                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "firkateyn", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforpc++;}
-                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", "firkateyn", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, playingCard.is_used, false));iforplayer++;}
+                if(!this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/backside.png", "firkateyn", this.OyuncuID, iforpc, (byte)playingCard.dayaniklilik, (byte)playingCard.seviyePuani, (byte)playingCard.vurus, playingCard.is_used, false));iforpc++;}
+                if(this.OyuncuID){cardsinfo.add(new CardForGraphics((short)0, (short)0, (short)100, (short)150, 0, "Visual/fırkateyn.png", "firkateyn", this.OyuncuID, iforplayer, (byte)playingCard.dayaniklilik, (byte)playingCard.seviyePuani, (byte)playingCard.vurus, playingCard.is_used, false));iforplayer++;}
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
         }
@@ -170,7 +170,7 @@ public class Oyuncu
             else if (!card.owners_id && card.index_in_deck == index_in_deck)
             {
                 card.in_battle_rn = false;
-                card.path = "Visuals/backside.png";
+                card.path = "Visual/backside.png";
             }
 
         }

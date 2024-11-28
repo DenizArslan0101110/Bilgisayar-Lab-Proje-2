@@ -8,6 +8,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
@@ -21,20 +22,28 @@ public class GraphicalUserInterface extends JPanel
     private ArrayList<CardForGraphics> cardsinfo;
     private ArrayList<CardForGraphics> framesonmap;
     private ArrayList<CardForGraphics> safecardsinfo;
+    private ArrayList<String> stringass;
+    private static String text;
 
-    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo)
+    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo, ArrayList<String> stringass)
     {
+        setLayout(null);
         this.cardsinfo = cardsinfo;
         this.framesonmap = framesonmap;
         this.safecardsinfo = safecardsinfo;
+        this.stringass = stringass;
         // JFrame basically our window
-        this.window = new JFrame();                               // create frame
+        this.window = new JFrame();                                 // create frame
+
         window.setBackground(Color.BLACK);
         window.setTitle("Kart Oyunu: Savaş Araçları");              // set title
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      // x button purpose
         window.setResizable(false);                                 // disable resize
         window.setSize(1366, 876);                                  // set size
+
+
         window.setVisible(true);                                    // make window visible
+
 
         window.addMouseListener(new MouseListener() {
 
@@ -83,6 +92,7 @@ public class GraphicalUserInterface extends JPanel
 
     }
 
+
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -92,6 +102,12 @@ public class GraphicalUserInterface extends JPanel
 
         for (CardForGraphics card : safecardsinfo) g.drawImage(card.image, card.display_x_pos, card.display_y_pos, null);
 
+        g.setFont(new Font("Comic Sans MS", Font.PLAIN, 34));
+        g.setColor(Color.WHITE);
+        g.drawString(stringass.get(0), 30, 270);
+        g.drawString(stringass.get(1), 30, 330);
+        g.drawString(stringass.get(2), 30, 390);
+        g.drawString(stringass.get(3), 30, 450);
 
     }
 

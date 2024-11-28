@@ -15,9 +15,21 @@ public class Oyun
         ArrayList<CardForGraphics> cardsinfo = new ArrayList<>();
         ArrayList<CardForGraphics> framesandmap = new ArrayList<>();
         ArrayList<CardForGraphics> safecardsinfo = new ArrayList<>();
+        ArrayList<String> stringass = new ArrayList<>();
+        stringass.add("a");
+        stringass.add("b");
+        stringass.add("c");
+        stringass.add("d");
         MakeFramesAndMap(framesandmap);
-        GraphicalUserInterface gui = new GraphicalUserInterface(cardsinfo, framesandmap, safecardsinfo);
+
+        GraphicalUserInterface gui = new GraphicalUserInterface(cardsinfo, framesandmap, safecardsinfo, stringass);
+        gui.window.setBounds(0, 0, gui.window.getWidth(), gui.window.getHeight());
+
+
+
         gui.window.add(gui);
+
+
 
         Oyuncu Player = new Oyuncu(true,"Oyuncu",0);
         Oyuncu bilgisayar = new Oyuncu(false,"Bilgisayar",0);
@@ -70,13 +82,14 @@ public class Oyun
             {
                 if(NumbersClicked == 0)
                 {
-                    System.out.println("Kart 1 Seçiliyor");        ///COCONUT.JPG
+                    //System.out.println("Kart 1 Seçiliyor");        ///COCONUT.JPG
                     kart1 = selected_card;
                     for(CardForGraphics card: cardsinfo)
                     {
                         if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
                         {
                             card.is_selected_rn=true;
+                            GiveCardInfoAsText(stringass, card);
                         }
                         else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
                     }
@@ -87,13 +100,14 @@ public class Oyun
                 {
                     Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number,true);
                     Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
-                    System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
+                    //System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
                     kart2 = selected_card;
                     for(CardForGraphics card: cardsinfo)
                     {
                         if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
                         {
                             card.is_selected_rn=true;
+                            GiveCardInfoAsText(stringass, card);
                         }
                         else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
                     }
@@ -103,13 +117,14 @@ public class Oyun
                 {
                     Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number,true);
                     Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
-                    System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
+                    //System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
                     kart3 = selected_card;
                     for(CardForGraphics card: cardsinfo)
                     {
                         if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
                         {
                             card.is_selected_rn=true;
+                            GiveCardInfoAsText(stringass, card);
                         }
                         else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
                     }
@@ -352,6 +367,17 @@ public class Oyun
                 System.out.print("\nBilgisayarin karti öldü !\n");
             }
         }
+    }
+
+    public static void GiveCardInfoAsText(ArrayList<String> stringass, CardForGraphics card)
+    {
+        stringass.set(0, " Kart: "+card.machine_id);
+        stringass.set(1, " Dayanıklılık: "+card.hp+"/"+card.maxhp);
+        stringass.set(2, " Vuruş: "+card.atk);
+        stringass.set(3, " Seviye puanı:"+card.xp);
+        String text_box_text;
+        text_box_text = " Kart: "+card.machine_id+"\n Dayanıklılık: "+card.hp;
+
     }
 
     // displays 6 card selection slots on map (yes its by hand Im not making a for loop with 3 elements)
