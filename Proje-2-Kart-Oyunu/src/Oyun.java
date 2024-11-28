@@ -1,6 +1,5 @@
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
@@ -14,10 +13,10 @@ public class Oyun
         byte Turn_number = 1;
 
         ArrayList<CardForGraphics> cardsinfo = new ArrayList<>();
-        ArrayList<CardForGraphics> framesonmap = new ArrayList<>();
+        ArrayList<CardForGraphics> framesandmap = new ArrayList<>();
         ArrayList<CardForGraphics> safecardsinfo = new ArrayList<>();
-        MakeFramesOnMap(framesonmap);
-        GraphicalUserInterface gui = new GraphicalUserInterface(cardsinfo, framesonmap, safecardsinfo);
+        MakeFramesAndMap(framesandmap);
+        GraphicalUserInterface gui = new GraphicalUserInterface(cardsinfo, framesandmap, safecardsinfo);
         gui.window.add(gui);
 
         Oyuncu Player = new Oyuncu(true,"Oyuncu",0);
@@ -38,17 +37,14 @@ public class Oyun
 
 
 
-        // DO NOT REPLACE WITH LAMBDA PLEASE I DONT FUCKING KNOW WHAT A LAMBDA IS, IGNORE THE WARNING
-        ActionListener screen_refresher = new ActionListener()
+        // LAMBDA IS FINE ACTUALLY
+        ActionListener screen_refresher = evt ->
         {
-            public void actionPerformed(ActionEvent evt)
-            {
-                OrderCardsIntoADeck(cardsinfo);
-                ReloadImages(cardsinfo);
-                gui.setBackground(Color.DARK_GRAY);
-                gui.repaint();
+            OrderCardsIntoADeck(cardsinfo);
+            ReloadImages(cardsinfo);
+            gui.setBackground(Color.DARK_GRAY);
+            gui.repaint();
 
-            }
         };
 
         Timer screen_refresh_timer = new Timer(1000/60, screen_refresher);
@@ -359,13 +355,16 @@ public class Oyun
     }
 
     // displays 6 card selection slots on map (yes its by hand Im not making a for loop with 3 elements)
-    public static void MakeFramesOnMap(ArrayList<CardForGraphics> framesonmap)
+    public static void MakeFramesAndMap(ArrayList<CardForGraphics> framesandmap)
     {
-        framesonmap.add(new CardForGraphics((short)483, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
-        framesonmap.add(new CardForGraphics((short)633, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
-        framesonmap.add(new CardForGraphics((short)783, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
-        framesonmap.add(new CardForGraphics((short)483, (short)233, (short)104, (short)154, (short)0, "Visual/frame.png"));
-        framesonmap.add(new CardForGraphics((short)633, (short)233, (short)104, (short)154, (short)0, "Visual/frame.png"));
-        framesonmap.add(new CardForGraphics((short)783, (short)233, (short)104, (short)154, (short)0, "Visual/frame.png"));
+        framesandmap.add(new CardForGraphics((short)0, (short)0, (short)736, (short)490, (short)0, "Visual/wood.jpg"));
+        framesandmap.getFirst().image = GraphicalUserInterface.scale(framesandmap.getFirst().image, 1366, 876);
+        framesandmap.add(new CardForGraphics((short)483, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
+        framesandmap.add(new CardForGraphics((short)633, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
+        framesandmap.add(new CardForGraphics((short)783, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
+        framesandmap.add(new CardForGraphics((short)483, (short)233, (short)104, (short)154, (short)0, "Visual/frame.png"));
+        framesandmap.add(new CardForGraphics((short)633, (short)233, (short)104, (short)154, (short)0, "Visual/frame.png"));
+        framesandmap.add(new CardForGraphics((short)783, (short)233, (short)104, (short)154, (short)0, "Visual/frame.png"));
+
     }
 }
