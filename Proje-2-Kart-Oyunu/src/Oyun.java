@@ -8,7 +8,7 @@ public class Oyun
     static int selected_card;
     static int NumbersClicked = 0;
     public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
+        //Scanner scanner = new Scanner(System.in);
         final int NUMBER_OF_CARDS = 6;
         byte Turn_number = 1;
 
@@ -16,10 +16,8 @@ public class Oyun
         ArrayList<CardForGraphics> framesandmap = new ArrayList<>();
         ArrayList<CardForGraphics> safecardsinfo = new ArrayList<>();
         ArrayList<String> stringass = new ArrayList<>();
-        stringass.add("a");
-        stringass.add("b");
-        stringass.add("c");
-        stringass.add("d");
+        for(short i=0; i<8 ;i++) stringass.add("fumo");
+
         MakeFramesAndMap(framesandmap);
 
         GraphicalUserInterface gui = new GraphicalUserInterface(cardsinfo, framesandmap, safecardsinfo, stringass);
@@ -89,7 +87,7 @@ public class Oyun
                         if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
                         {
                             card.is_selected_rn=true;
-                            GiveCardInfoAsText(stringass, card);
+                            GiveCardInfoAsText(stringass, card, Player, bilgisayar);
                         }
                         else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
                     }
@@ -99,7 +97,6 @@ public class Oyun
                 if(NumbersClicked == 1)
                 {
                     Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number,true);
-                    Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
                     //System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
                     kart2 = selected_card;
                     for(CardForGraphics card: cardsinfo)
@@ -107,7 +104,7 @@ public class Oyun
                         if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
                         {
                             card.is_selected_rn=true;
-                            GiveCardInfoAsText(stringass, card);
+                            GiveCardInfoAsText(stringass, card, Player, bilgisayar);
                         }
                         else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
                     }
@@ -116,7 +113,7 @@ public class Oyun
                 if(NumbersClicked == 2)
                 {
                     Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number,true);
-                    Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
+
                     //System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
                     kart3 = selected_card;
                     for(CardForGraphics card: cardsinfo)
@@ -124,7 +121,7 @@ public class Oyun
                         if(card.index_in_deck==selected_card && card.owners_id && !card.is_selected_rn)
                         {
                             card.is_selected_rn=true;
-                            GiveCardInfoAsText(stringass, card);
+                            GiveCardInfoAsText(stringass, card, Player, bilgisayar);
                         }
                         else if(card.index_in_deck!=selected_card) card.is_selected_rn=false;
                     }
@@ -133,34 +130,21 @@ public class Oyun
             }
             for(CardForGraphics card: cardsinfo) card.is_selected_rn = false;
             Oyuncu.SendCardToWar(kart3,3,cardsinfo,Turn_number,true);
+
+            Thread.sleep(800);
+            Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
+            Thread.sleep(400);
+            Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
+            Thread.sleep(400);
             Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,Turn_number,false);
             System.out.println(kart1 + " " + kart2 + " " + kart3);
 
-
-            // dont touch it explodes if touch
-
-            // below is where we send killing machines to war
-            //kart1 = scanner.nextInt();
-            //screen_refresh_timer.stop();
-            //screen_refresh_timer.start();
-
-
-            //kart2 = scanner.nextInt();
-            //screen_refresh_timer.stop();
-
-            //screen_refresh_timer.start();
-
-
-            //kart3 = scanner.nextInt();
-            //screen_refresh_timer.stop();
-            //screen_refresh_timer.start();
-
             System.out.println(kart1 +" "+kart2 +" "+kart3);
 
-            Thread.sleep(4000);
+            Thread.sleep(3000);
 
             // JsonBitirici'nin torunu
-            SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3,isChosen.get(0),isChosen.get(1),isChosen.get(2), Turn_number);
+            SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3,isChosen.get(0),isChosen.get(1),isChosen.get(2));
 
             // give them a break they did their best
             Oyuncu.SendCardBackHome(kart1,cardsinfo);
@@ -267,10 +251,10 @@ public class Oyun
     }
 
     // bigass function
-    public static void SaldiriHesapla(Oyuncu Player,Oyuncu bilgisayar,int kart1 ,int kart2 ,int kart3, int pckart1, int pckart2, int pckart3, byte turn)
+    public static void SaldiriHesapla(Oyuncu Player,Oyuncu bilgisayar,int kart1 ,int kart2 ,int kart3, int pckart1, int pckart2, int pckart3)
     {
-        ArrayList<Integer> Cards = new ArrayList<>();           ///Hangi sayilari seçtiğimi tutmak için liste
-        ArrayList<Integer> CardsForComputer = new ArrayList<>();        ///Üstteki ama bilgisayarlı versiyonu
+        ArrayList<Integer> Cards;           ///Hangi sayilari seçtiğimi tutmak için liste
+        ArrayList<Integer> CardsForComputer;        ///Üstteki ama bilgisayarlı versiyonu
 
         System.out.println("\nPlayer Playing_Cards tam liste: "+Player.Playing_Cards);
 
@@ -369,15 +353,14 @@ public class Oyun
         }
     }
 
-    public static void GiveCardInfoAsText(ArrayList<String> stringass, CardForGraphics card)
+    public static void GiveCardInfoAsText(ArrayList<String> stringass, CardForGraphics card, Oyuncu Player, Oyuncu Bilgisayar)
     {
         stringass.set(0, " Kart: "+card.machine_id);
         stringass.set(1, " Dayanıklılık: "+card.hp+"/"+card.maxhp);
         stringass.set(2, " Vuruş: "+card.atk);
-        stringass.set(3, " Seviye puanı:"+card.xp);
-        String text_box_text;
-        text_box_text = " Kart: "+card.machine_id+"\n Dayanıklılık: "+card.hp;
-
+        stringass.set(3, " Seviye puanı: "+card.xp);
+        stringass.set(4, " Oyuncu Skor: "+Player.skor);
+        stringass.set(5, " Bilgisayar Skor: "+Bilgisayar.skor);
     }
 
     // displays 6 card selection slots on map (yes its by hand Im not making a for loop with 3 elements)
@@ -385,6 +368,7 @@ public class Oyun
     {
         framesandmap.add(new CardForGraphics((short)0, (short)0, (short)736, (short)490, (short)0, "Visual/wood.jpg"));
         framesandmap.getFirst().image = GraphicalUserInterface.scale(framesandmap.getFirst().image, 1366, 876);
+        framesandmap.add(new CardForGraphics((short)30, (short)240, (short)400, (short)350, (short)0, "Visual/textbox.jpg"));
         framesandmap.add(new CardForGraphics((short)483, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
         framesandmap.add(new CardForGraphics((short)633, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));
         framesandmap.add(new CardForGraphics((short)783, (short)433, (short)104, (short)154, (short)0, "Visual/frame.png"));

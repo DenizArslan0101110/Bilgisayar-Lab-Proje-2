@@ -25,8 +25,7 @@ public class GraphicalUserInterface extends JPanel
     private ArrayList<String> stringass;
     private static String text;
 
-    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo, ArrayList<String> stringass)
-    {
+    GraphicalUserInterface(ArrayList<CardForGraphics> cardsinfo, ArrayList<CardForGraphics> framesonmap, ArrayList<CardForGraphics> safecardsinfo, ArrayList<String> stringass) throws InterruptedException {
         setLayout(null);
         this.cardsinfo = cardsinfo;
         this.framesonmap = framesonmap;
@@ -40,9 +39,9 @@ public class GraphicalUserInterface extends JPanel
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      // x button purpose
         window.setResizable(false);                                 // disable resize
         window.setSize(1366, 876);                                  // set size
+        //window.setSize(400,350);
 
 
-        window.setVisible(true);                                    // make window visible
 
 
         window.addMouseListener(new MouseListener() {
@@ -88,6 +87,7 @@ public class GraphicalUserInterface extends JPanel
                 }
             }
         });
+        window.setVisible(true);                                    // make window visible
 
 
     }
@@ -104,10 +104,12 @@ public class GraphicalUserInterface extends JPanel
 
         g.setFont(new Font("Comic Sans MS", Font.PLAIN, 34));
         g.setColor(Color.WHITE);
-        g.drawString(stringass.get(0), 30, 270);
-        g.drawString(stringass.get(1), 30, 330);
-        g.drawString(stringass.get(2), 30, 390);
-        g.drawString(stringass.get(3), 30, 450);
+        g.drawString(stringass.get(0), 60, 330);
+        g.drawString(stringass.get(1), 60, 390);
+        g.drawString(stringass.get(2), 60, 450);
+        g.drawString(stringass.get(3), 60, 510);
+        g.drawString(stringass.get(4), 20, 800);
+        g.drawString(stringass.get(5), 1000, 60);
 
     }
 
