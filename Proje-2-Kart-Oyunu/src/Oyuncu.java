@@ -10,12 +10,12 @@ public class Oyuncu
 
     boolean OyuncuID; // true insan, false makine
     String OyuncuAdi;
-    int skor;
-    int card_score = 0;
-    int random_int;
+    short skor;
+    byte card_score = 0;
+    byte random_byte;
 
 
-    Oyuncu(boolean OyuncuID,String OyuncuAdi,int skor){
+    Oyuncu(boolean OyuncuID,String OyuncuAdi,short skor){
         this.OyuncuID = OyuncuID;
         this.OyuncuAdi = OyuncuAdi;
         this.skor = skor;
@@ -27,34 +27,25 @@ public class Oyuncu
 
         for(int i = 0 ; i < card_number ; i++){     /// Kart sayisini temsil ediyor.
 
-            random_int = random.nextInt(6);
-            switch(random_int){ /// Random sayi atıyor buna göre oyuncu karakterinde kart dağıtımı yapılacak.
+            random_byte = (byte)random.nextInt(6);
+            switch(random_byte){ /// Random sayi atıyor buna göre oyuncu karakterinde kart dağıtımı yapılacak.
                 case 0:
-                    Playing_Cards.add(new Ucak(0,20,10,"Hava","Uçak",10));
-                    break;
+                    Playing_Cards.add(new Ucak(0,20,10,"Hava","Uçak",10)); break;
                 case 1:
-                    Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5));
-                    break;
+                    Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5)); break;
                 case 2:
-                    Playing_Cards.add(new Firkateyn(0,25,10,"Deniz","Fırkateyn",5));
-                    break;
+                    Playing_Cards.add(new Firkateyn(0,25,10,"Deniz","Fırkateyn",5)); break;
                 case 3:
-                    if(card_score >= 20)
-                        Playing_Cards.add(new Siha(0,15,10,"Hava","Siha",10,20));
-                    else
-                        Playing_Cards.add(new Ucak(0,20,10,"Hava","Uçak",10));
+                    if(card_score >= 20) Playing_Cards.add(new Siha(0,15,10,"Hava","Siha",10,20));
+                    else Playing_Cards.add(new Ucak(0,20,10,"Hava","Uçak",10));
                     break;
                 case 4:
-                    if(card_score >= 20)
-                        Playing_Cards.add(new KFS(0,10,10,"Kara","KFS",10,20));
-                    else
-                        Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5));
+                    if(card_score >= 20) Playing_Cards.add(new KFS(0,10,10,"Kara","KFS",10,20));
+                    else Playing_Cards.add(new Obus(0,20,10,"Kara","Obüs",5));
                     break;
                 case 5:
-                    if(card_score >= 20)
-                        Playing_Cards.add(new Sida(0,15,10,"Deniz","Sida",10,10));
-                    else
-                        Playing_Cards.add(new Firkateyn(0,25,10,"Deniz","Fırkateyn",5));
+                    if(card_score >= 20) Playing_Cards.add(new Sida(0,15,10,"Deniz","Sida",10,10));
+                    else Playing_Cards.add(new Firkateyn(0,25,10,"Deniz","Fırkateyn",5));
                     break;
             }
         }
@@ -102,7 +93,7 @@ public class Oyuncu
 
     public void SkorGoster()
     {
-        for (SavasAraclari Pcard : Playing_Cards) card_score += Pcard.seviyePuani;
+        for (SavasAraclari Pcard : Playing_Cards) card_score += (byte)Pcard.seviyePuani;
         //return skor;      /// Normalde return değeri vardi yedim onu.      // afied
     }
 

@@ -31,12 +31,10 @@ public class CardForGraphics
 
         switch(machine_id)
         {
-            case "ucak": maxhp=20; break;
-            case "obus": maxhp=20; break;
+            case "ucak", "obus": maxhp=20; break;
             case "firkateyn": maxhp=25; break;
-            case "siha": maxhp=15; break;
+            case "siha", "sida": maxhp=15; break;
             case "kfs": maxhp=10; break;
-            case "sida": maxhp=15; break;
         }
     }
 
@@ -61,27 +59,6 @@ public class CardForGraphics
     public void SetYPos(short y_pos)
     {
         this.y_pos = y_pos;
-    }
-
-    /*public void Set_W(short width)
-    {
-        this.width = width;
-    }
-
-    public void Set_H(short height)
-    {
-        this.height = height;
-    }*/
-
-    public void set_Image(BufferedImage image)
-    {
-        this.image = image;
-    }
-
-    public void AddToRotation(double increase)
-    {
-        this.rotation += increase;
-        if(this.rotation >= 360) this.rotation-=360;
     }
 
     public void SetRotation(double value)
