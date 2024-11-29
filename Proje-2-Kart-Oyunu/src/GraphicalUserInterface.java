@@ -1,4 +1,3 @@
-import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -8,13 +7,11 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class GraphicalUserInterface extends JPanel
 {
-    int Player_card_number;
     int CardsNumber;
     JFrame window;
 

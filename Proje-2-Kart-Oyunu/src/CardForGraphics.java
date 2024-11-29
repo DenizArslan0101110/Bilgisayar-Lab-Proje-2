@@ -2,7 +2,6 @@ import java.awt.image.BufferedImage;
 
 public class CardForGraphics
 {
-    static byte turn_number = 0;
     boolean owners_id, used_or_not = false, in_battle_rn = false, is_selected_rn = false;
     byte index_in_deck, hp, xp, atk, maxhp;
     short x_pos, y_pos, display_x_pos, display_y_pos, width, height;

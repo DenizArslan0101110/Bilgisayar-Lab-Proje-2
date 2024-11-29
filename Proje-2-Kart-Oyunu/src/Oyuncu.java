@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Random;
 
 
@@ -101,29 +100,13 @@ public class Oyuncu
         return new ArrayList<>(isChosen1);
     }
 
-    // DEPRECATED
-    /*
-    public ArrayList<Integer> kartSec(){                         /// Bilgisayar için kart seç.
-        LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
-
-        while(isChosen1.size() < 3) {
-            isChosen1.add(random.nextInt(Playing_Cards.size()));
-        }
-        ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
-        return isChosen;
-    }*/
-
     public void SkorGoster()
     {
-        for (int i = 0; i < Playing_Cards.size(); i++)
-        {
-            card_score += Playing_Cards.get(i).seviyePuani;
-        }
-
+        for (SavasAraclari Pcard : Playing_Cards) card_score += Pcard.seviyePuani;
         //return skor;      /// Normalde return değeri vardi yedim onu.      // afied
     }
 
-    public static void SendCardToWar(int index_in_deck, int index_in_battle, ArrayList<CardForGraphics> cardsinfo, byte turn_number, boolean player_called_this)
+    public static void SendCardToWar(int index_in_deck, int index_in_battle, ArrayList<CardForGraphics> cardsinfo, boolean player_called_this)
     {
     // note to future seld, CFG is singular cards type, card is singular card, cardsinfo is the whole deck including everything on screen
         for(CardForGraphics card : cardsinfo)

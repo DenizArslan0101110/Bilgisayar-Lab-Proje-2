@@ -64,7 +64,6 @@ public class Oyun
         // marks the main game loop
         for (; Turn_number < 50 ; Turn_number++)
         {
-            CardForGraphics.turn_number = Turn_number;
             NumbersClicked = 0;
 
             System.out.println("Kart numarasi giriniz: ");
@@ -96,7 +95,7 @@ public class Oyun
                 }
                 if(NumbersClicked == 1)
                 {
-                    Oyuncu.SendCardToWar(kart1,1,cardsinfo,Turn_number,true);
+                    Oyuncu.SendCardToWar(kart1,1,cardsinfo,true);
                     //System.out.println("Kart 2 Seçiliyor");        ///COCONUT.JPG
                     kart2 = selected_card;
                     for(CardForGraphics card: cardsinfo)
@@ -112,7 +111,7 @@ public class Oyun
                 }
                 if(NumbersClicked == 2)
                 {
-                    Oyuncu.SendCardToWar(kart2,2,cardsinfo,Turn_number,true);
+                    Oyuncu.SendCardToWar(kart2,2,cardsinfo,true);
 
                     //System.out.println("Kart 3 Seçiliyor");        ///COCONUT.JPG
                     kart3 = selected_card;
@@ -129,14 +128,14 @@ public class Oyun
                 }
             }
             for(CardForGraphics card: cardsinfo) card.is_selected_rn = false;
-            Oyuncu.SendCardToWar(kart3,3,cardsinfo,Turn_number,true);
+            Oyuncu.SendCardToWar(kart3,3,cardsinfo,true);
 
             Thread.sleep(800);
-            Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,Turn_number,false);
+            Oyuncu.SendCardToWar(isChosen.get(0),1,cardsinfo,false);
             Thread.sleep(400);
-            Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,Turn_number,false);
+            Oyuncu.SendCardToWar(isChosen.get(1),2,cardsinfo,false);
             Thread.sleep(400);
-            Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,Turn_number,false);
+            Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,false);
             System.out.println(kart1 + " " + kart2 + " " + kart3);
 
             System.out.println(kart1 +" "+kart2 +" "+kart3);
