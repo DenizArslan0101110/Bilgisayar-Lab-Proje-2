@@ -13,9 +13,13 @@ public class Ucak extends HavaAraclari
         dayaniklilik -= damage;
         if(dayaniklilik <= 0)
         {
-            if(seviyePuani + xp <= 10)seviyePuani = 10;
-            else seviyePuani += xp;
-            return seviyePuani;
+            if(xp == 0) {
+                seviyePuani = 10;
+                xp = 10;
+            }
+            else
+                seviyePuani += xp;
+            return xp;
         }
         else return 0;
     }

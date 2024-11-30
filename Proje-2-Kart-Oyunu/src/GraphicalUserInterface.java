@@ -66,9 +66,9 @@ public class GraphicalUserInterface extends JPanel
                 //if(k == 0)
                 //{
                     CardsNumber = 0;
-                    for(CardForGraphics card :cardsinfo)
+                    for(SavasAraclari card :PlayingCards)
                     {
-                        if(card.owners_id) CardsNumber++;
+                        CardsNumber++;
                     }
                    // k++;
                // }
@@ -77,12 +77,16 @@ public class GraphicalUserInterface extends JPanel
                     if(Oyun.selected_card < CardsNumber - 1)
                     {
                         Oyun.selected_card++;
+
                         while(PlayingCards.get(Oyun.selected_card).is_used)
                         {
                             if(Oyun.selected_card < CardsNumber - 1) Oyun.selected_card++;
                             else Oyun.selected_card = 0;
                         }
+
+
                     }
+
                     else
                     {
                         Oyun.selected_card = 0;
@@ -92,12 +96,14 @@ public class GraphicalUserInterface extends JPanel
                         }
                     }
                     System.out.println(Oyun.selected_card);
+
+
                 }
                 else if(e.getWheelRotation() > 0)
                 {
-                    if(Oyun.selected_card > 0)
-                    {
+                    if(Oyun.selected_card > 0) {
                         Oyun.selected_card--;
+
                         while(PlayingCards.get(Oyun.selected_card).is_used)
                         {
                             if(Oyun.selected_card > 0) Oyun.selected_card--;
@@ -112,6 +118,9 @@ public class GraphicalUserInterface extends JPanel
                         }
                     }
                     System.out.println(Oyun.selected_card);
+
+
+
                 }
             }
         });

@@ -38,7 +38,12 @@ public class Oyun
         Player.ShuffleCards(NUMBER_OF_CARDS);
         bilgisayar.ShuffleCards(NUMBER_OF_CARDS);
 
-        System.out.println("Insanlarin kartlari :");
+        System.out.println(NUMBER_OF_CARDS);
+
+
+        for(SavasAraclari arac : Player.Playing_Cards)
+            System.out.println(arac.is_used);
+        System.out.println("SEX  : " +  Player.Playing_Cards.size());
         Player.CopyCards(cardsinfo);
         System.out.println("Bilgisayarin kartlari :");
         bilgisayar.CopyCards(cardsinfo);
@@ -78,11 +83,13 @@ public class Oyun
             LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
 
 
+
+
             while(isChosen1.size() < 3)
             {
-                randomNumber = random.nextInt(bilgisayar.Playing_Cards.size());
                 if(isChosen1.isEmpty())
                 {          /////////////Kart1
+                    randomNumber = random.nextInt(bilgisayar.Playing_Cards.size());
                     for(SavasAraclari card : bilgisayar.Playing_Cards)
                     {
                         if(card.is_used) numberOfUsedCardsPc++;
@@ -122,7 +129,7 @@ public class Oyun
                 }
                 if(isChosen1.size() == 2)
                 {          ///////Kart3
-                     bilgisayar.Playing_Cards.get(kart2).is_used = true;
+                    bilgisayar.Playing_Cards.get(kart2).is_used = true;
                     for(SavasAraclari tempt : bilgisayar.Playing_Cards)
                     {
                         if(tempt.is_used) numberOfUsedCardsPc++;
@@ -132,7 +139,8 @@ public class Oyun
                     {
                         for(int i = 0 ; i < bilgisayar.Playing_Cards.size(); i++)
                         {
-                            if(i != kart1Pc || i != kart2Pc) bilgisayar.Playing_Cards.get(i).is_used = false;
+                            if(i != kart1Pc && i != kart2Pc)
+                                bilgisayar.Playing_Cards.get(i).is_used = false;
                         }
                     }
                     randomNumber = random.nextInt(bilgisayar.Playing_Cards.size());
@@ -142,8 +150,10 @@ public class Oyun
                         kart3Pc = randomNumber;
                     }
                 }
-                bilgisayar.Playing_Cards.get(kart3Pc).is_used = true;
             }
+            bilgisayar.Playing_Cards.get(kart3Pc).is_used = true;
+
+
 
             ArrayList<Integer> isChosen = new ArrayList<>(isChosen1);
 
@@ -152,7 +162,8 @@ public class Oyun
             for(SavasAraclari card : Player.Playing_Cards)
             {
                 if(card.is_used) numberOfUsedCards++;
-                if (numberOfUsedCards == Player.Playing_Cards.size()) { checkTheDeck = false; break; }
+                if (numberOfUsedCards == Player.Playing_Cards.size()) { checkTheDeck = false;}
+                else checkTheDeck = true;
             }
             if(!checkTheDeck)
             {      ///If all the cards from deck is used, open all of them.
@@ -162,17 +173,25 @@ public class Oyun
 
             /// TAM BURADA SELECTED CARD DEĞİŞKENİNİ SEÇMEYE UYGUN OLAN BİR KARTA EŞİTLE YOKSA AYNI KARTI İKİ DEFA ATABİLİYORUZ
             /// EVET 0 YAPARSAN DA OLUYO 0A EŞİTLEME
+            /// biliyorum.
+            ///Kolaydı. Ez.
 
 
-            while(NumbersClicked < 3)
+            while(NumbersClicked < 3)                                               ///Select player cards.
             {
                 if(NumbersClicked == 0)
                 {
                     int tempt = selected_card;
-                    if(!Player.Playing_Cards.get(tempt).is_used) kart1 = tempt;
+                    while(Player.Playing_Cards.get(kart1).is_used)
+                        kart1++;
+
+                    if(!Player.Playing_Cards.get(tempt).is_used)
+                    {
+                        kart1 = tempt;
+                    }
                     for(CardForGraphics card: cardsinfo)
                     {
-                        if(card.index_in_deck==kart1 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(selected_card).is_used)
+                        if(card.index_in_deck==kart1 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(kart1).is_used)
                         {
                             card.is_selected_rn=true;
                             GiveCardInfoAsText(stringass, card, Player, bilgisayar);
@@ -189,7 +208,8 @@ public class Oyun
                         for(SavasAraclari card : Player.Playing_Cards)
                         {
                             if(card.is_used) numberOfUsedCards++;
-                            if(numberOfUsedCards == Player.Playing_Cards.size()) checkTheDeck = false;
+                            if(numberOfUsedCards == Player.Playing_Cards.size()) {checkTheDeck = false;}
+                            else checkTheDeck = true;
                         }
                         if(!checkTheDeck)
                         {
@@ -200,12 +220,14 @@ public class Oyun
                         }
                         check1 = true;
                     }
+                    while(Player.Playing_Cards.get(kart2).is_used)
+                        kart2++;
                     int tempt = selected_card;
                     Oyuncu.SendCardToWar(kart1,1,cardsinfo,true);
                     if(!Player.Playing_Cards.get(tempt).is_used) kart2 = tempt;
                     for(CardForGraphics card: cardsinfo)
                     {
-                        if(card.index_in_deck==kart2 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(selected_card).is_used)
+                        if(card.index_in_deck==kart2 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(kart2).is_used)
                         {
                             card.is_selected_rn=true;
                             GiveCardInfoAsText(stringass, card, Player, bilgisayar);
@@ -223,21 +245,27 @@ public class Oyun
                         {
                             if (tempt.is_used) numberOfUsedCards++;
                             if (numberOfUsedCards == Player.Playing_Cards.size()) checkTheDeck = false;
+                            else checkTheDeck = true;
                         }
                         if (!checkTheDeck) {
                             for (int i = 0; i < Player.Playing_Cards.size(); i++)
                             {
-                                if (i != kart1 && i != kart2) Player.Playing_Cards.get(i).is_used = false;
+                                if (i == kart1 || i == kart2)
+                                    continue;
+                                else
+                                    Player.Playing_Cards.get(i).is_used = false;
                             }
                         }
                         check2 = true;
                     }
+                    while(Player.Playing_Cards.get(kart3).is_used)
+                        kart3++;
                     int tempt = selected_card;
                     Oyuncu.SendCardToWar(kart2,2,cardsinfo,true);
                     if(!Player.Playing_Cards.get(tempt).is_used) kart3 = tempt;
                     for(CardForGraphics card: cardsinfo)
                     {
-                        if(card.index_in_deck==kart3 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(selected_card).is_used)
+                        if(card.index_in_deck==kart3 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(kart3).is_used)
                         {
                             card.is_selected_rn=true;
                             GiveCardInfoAsText(stringass, card, Player, bilgisayar);
