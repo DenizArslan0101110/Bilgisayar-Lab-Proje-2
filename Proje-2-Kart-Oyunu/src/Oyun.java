@@ -1,3 +1,4 @@
+import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -7,7 +8,11 @@ public class Oyun
 {
     static int selected_card;
     static int NumbersClicked = 0;
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException
+    {
+        short max_turns = Short.parseShort(JOptionPane.showInputDialog("Tur sınırını giriniz: "));
+        int starting_xp =  Integer.parseInt(JOptionPane.showInputDialog("Başlangıç seviye puanını giriniz: "));
+
         final int NUMBER_OF_CARDS = 6;
         byte Turn_number = 1;
 
@@ -15,8 +20,8 @@ public class Oyun
         ArrayList<CardForGraphics> framesandmap = new ArrayList<>();
         ArrayList<CardForGraphics> safecardsinfo = new ArrayList<>();
 
-        Oyuncu Player = new Oyuncu(true,"Oyuncu",(short)0);
-        Oyuncu bilgisayar = new Oyuncu(false,"Bilgisayar",(short)0);
+        Oyuncu Player = new Oyuncu(true,"Oyuncu",starting_xp);
+        Oyuncu bilgisayar = new Oyuncu(false,"Bilgisayar",starting_xp);
         
         ArrayList<String> stringass = new ArrayList<>();
         for(short i=0; i<8 ;i++) stringass.add("fumo");
@@ -54,7 +59,7 @@ public class Oyun
         screen_refresh_timer.start();
 
         // marks the main game loop
-        for (; Turn_number < 50 ; Turn_number++)
+        for (; Turn_number < max_turns ; Turn_number++)
         {
             NumbersClicked = 0;
 
@@ -153,6 +158,11 @@ public class Oyun
             {      ///If all the cards from deck is used, open all of them.
                 for(SavasAraclari card : Player.Playing_Cards) card.is_used = false;
             }
+
+
+            /// TAM BURADA SELECTED CARD DEĞİŞKENİNİ SEÇMEYE UYGUN OLAN BİR KARTA EŞİTLE YOKSA AYNI KARTI İKİ DEFA ATABİLİYORUZ
+            /// EVET 0 YAPARSAN DA OLUYO 0A EŞİTLEME
+
 
             while(NumbersClicked < 3)
             {
@@ -262,14 +272,22 @@ public class Oyun
 
             // fucking kill those who haven't tried hard enough
             FuckingKill(Player,bilgisayar);
-            Player.SkorGoster();
-            bilgisayar.SkorGoster();
+            //Player.SkorGoster();
+            //bilgisayar.SkorGoster();
 
             // below is where we humiliate the loser with extra cards
-            if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty()) Player.ShuffleCards(3-Player.Playing_Cards.size());
+            if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty())
+            {
+                Player.ShuffleCards(3-Player.Playing_Cards.size());
+                Turn_number = (byte)(max_turns-2);
+            }
             else Player.ShuffleCards(1);
 
-            if(bilgisayar.Playing_Cards.size() < 3 && !bilgisayar.Playing_Cards.isEmpty()) bilgisayar.ShuffleCards(3-bilgisayar.Playing_Cards.size());
+            if(bilgisayar.Playing_Cards.size() < 3 && !bilgisayar.Playing_Cards.isEmpty())
+            {
+                bilgisayar.ShuffleCards(3-bilgisayar.Playing_Cards.size());
+                Turn_number = (byte)(max_turns-2);
+            }
             else bilgisayar.ShuffleCards(1);
 
 
@@ -287,9 +305,8 @@ public class Oyun
             screen_refresh_timer.start();
             // universe starts back up, feelin refreshed
 
-
         }
-
+        System.out.println("OYUN BİTTİ, OYNADIĞINIZ İÇİN TEŞEKKÜRLER");
 
 
 
@@ -468,8 +485,8 @@ public class Oyun
         stringass.set(1, " Dayanıklılık: "+card.hp+"/"+card.maxhp);
         stringass.set(2, " Vuruş: "+card.atk);
         stringass.set(3, " Seviye puanı: "+card.xp);
-        stringass.set(4, " Oyuncu Skor: "+Player.skor);
-        stringass.set(5, " Bilgisayar Skor: "+Bilgisayar.skor);
+        stringass.set(4, " Oyuncu Skor: "+Player.card_score);
+        stringass.set(5, " Bilgisayar Skor: "+Bilgisayar.card_score);
     }
 
     // displays 6 card selection slots on map (yes its by hand I'm not making a for loop with 3 elements)

@@ -136,6 +136,7 @@ public class GraphicalUserInterface extends JPanel
         g.drawString(stringass.get(4), 20, 800);
         g.drawString(stringass.get(5), 1000, 60);
 
+
     }
 
     // method for loading a buffered image with a specific jpg file

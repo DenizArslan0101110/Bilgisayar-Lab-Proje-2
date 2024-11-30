@@ -3,13 +3,13 @@ import java.awt.image.BufferedImage;
 public class CardForGraphics
 {
     boolean owners_id, used_or_not = false, in_battle_rn = false, is_selected_rn = false;
-    byte index_in_deck, hp, xp, atk, maxhp;
-    short x_pos, y_pos, display_x_pos, display_y_pos, width, height;
+    short index_in_deck, hp, atk, maxhp;
+    short x_pos, y_pos, display_x_pos, display_y_pos, width, height, xp;
     double rotation;
     String path, machine_id;
     BufferedImage image;
 
-    CardForGraphics(short x_pos, short y_pos, short width, short height, double rotation, String path, String machine_id, boolean owners_ID, byte index_in_deck, byte hp, byte xp, byte atk, boolean used_or_not, boolean in_battle_rn)
+    CardForGraphics(short x_pos, short y_pos, short width, short height, double rotation, String path, String machine_id, boolean owners_ID, byte index_in_deck, byte hp, short xp, byte atk, boolean used_or_not, boolean in_battle_rn)
     {
         this.x_pos = x_pos;
         this.y_pos = y_pos;

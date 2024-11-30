@@ -12,14 +12,12 @@ public class Obus extends KaraAraclari
     }
     public int DurumGuncelle(int damage,int xp){
         dayaniklilik -= damage;
-        if(dayaniklilik <= 0) {
-            if (xp == 0) {
-                seviyePuani = 10;
-            } else
-                seviyePuani += xp;
+        if(dayaniklilik <= 0)
+        {
+            if(seviyePuani + xp <= 10)seviyePuani = 10;
+            else seviyePuani += xp;
             return seviyePuani;
         }
-        else
-            return 0;
+        else return 0;
     }
 }

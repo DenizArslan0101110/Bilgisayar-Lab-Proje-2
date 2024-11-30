@@ -21,14 +21,10 @@ public class Siha extends HavaAraclari
         dayaniklilik -= damage;
         if(dayaniklilik <= 0)
         {
-            if(xp == 0){
-                seviyePuani = 10;
-            }
-            else
-                seviyePuani += xp;
+            if(seviyePuani + xp <= 10)seviyePuani = 10;
+            else seviyePuani += xp;
             return seviyePuani;
         }
-        else
-            return 0;
+        else return 0;
     }
 }
