@@ -2,14 +2,30 @@ import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Oyun
 {
     static int selected_card;
     static int NumbersClicked = 0;
-    public static void main(String[] args) throws InterruptedException
-    {
+
+    public static void main(String[] args) throws InterruptedException, IOException {
+
+        File file = new File("sonuclar.txt");
+        file.createNewFile();
+        FileWriter writer = new FileWriter("sonuclar.txt");
+        try{
+            writer.write("------------------------Game Log------------------------\n\n\n");
+        }
+        catch (IOException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+
         short max_turns = Short.parseShort(JOptionPane.showInputDialog("Tur sınırını giriniz: "));
         int starting_xp =  Integer.parseInt(JOptionPane.showInputDialog("Başlangıç seviye puanını giriniz: "));
 
@@ -38,12 +54,6 @@ public class Oyun
         Player.ShuffleCards(NUMBER_OF_CARDS);
         bilgisayar.ShuffleCards(NUMBER_OF_CARDS);
 
-        System.out.println(NUMBER_OF_CARDS);
-
-
-        for(SavasAraclari arac : Player.Playing_Cards)
-            System.out.println(arac.is_used);
-        System.out.println("SEX  : " +  Player.Playing_Cards.size());
         Player.CopyCards(cardsinfo);
         System.out.println("Bilgisayarin kartlari :");
         bilgisayar.CopyCards(cardsinfo);
@@ -63,9 +73,37 @@ public class Oyun
         Timer screen_refresh_timer = new Timer(1000/60, screen_refresher);
         screen_refresh_timer.start();
 
+
         // marks the main game loop
         for (; Turn_number < max_turns ; Turn_number++)
         {
+
+            try{
+                writer.write("-------------------------------" + Turn_number + ". Tur" +"-------------------------------\n" );
+                writer.write("Oyuncunun elindeki kartlar : \n");
+                writer.write("Isim--Can--Saldiri--Xp\n");
+
+                for(CardForGraphics card : cardsinfo){
+                    if(card.owners_id)
+                        writer.write(card.machine_id + " " + card.hp + " " + card.atk + " " + card.xp + "\n");
+                }
+                writer.write("-------------------------------------------------\n");
+
+                writer.write("Bilgisayarin elindeki kartlar : \n");
+                writer.write("Isim--Can--Saldiri--Xp\n");
+                for(CardForGraphics card : cardsinfo){
+                    if(!card.owners_id)
+                        writer.write(card.machine_id + " " + card.hp + " " + card.atk + " " + card.xp + "\n");
+                }
+            }
+            catch (IOException e){
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+
+
+
             NumbersClicked = 0;
 
             System.out.println("Kart numarasi giriniz: ");
@@ -183,7 +221,10 @@ public class Oyun
                 {
                     int tempt = selected_card;
                     while(Player.Playing_Cards.get(kart1).is_used)
-                        kart1++;
+                        if(kart1 < Player.Playing_Cards.size() - 1)
+                            kart1++;
+                        else
+                            kart1 = 0;
 
                     if(!Player.Playing_Cards.get(tempt).is_used)
                     {
@@ -221,7 +262,10 @@ public class Oyun
                         check1 = true;
                     }
                     while(Player.Playing_Cards.get(kart2).is_used)
-                        kart2++;
+                        if(kart2 < Player.Playing_Cards.size() - 1)
+                            kart2++;
+                        else
+                            kart2 = 0;
                     int tempt = selected_card;
                     Oyuncu.SendCardToWar(kart1,1,cardsinfo,true);
                     if(!Player.Playing_Cards.get(tempt).is_used) kart2 = tempt;
@@ -259,7 +303,10 @@ public class Oyun
                         check2 = true;
                     }
                     while(Player.Playing_Cards.get(kart3).is_used)
-                        kart3++;
+                        if(kart3 < Player.Playing_Cards.size() - 1)
+                            kart3++;
+                        else
+                            kart3 = 0;
                     int tempt = selected_card;
                     Oyuncu.SendCardToWar(kart2,2,cardsinfo,true);
                     if(!Player.Playing_Cards.get(tempt).is_used) kart3 = tempt;
@@ -286,12 +333,12 @@ public class Oyun
             Oyuncu.SendCardToWar(isChosen.get(2),3,cardsinfo,false);
             System.out.println(kart1 + " " + kart2 + " " + kart3);
 
-            System.out.println(kart1 +" "+kart2 +" "+kart3);
+            System.out.println(kart1 + " " + kart2 + " " + kart3);
 
             Thread.sleep(3000);
 
             // JsonBitirici'nin torunu
-            SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3,isChosen.get(0),isChosen.get(1),isChosen.get(2));
+            SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3,isChosen.get(0),isChosen.get(1),isChosen.get(2),writer);
 
             // give them a break they did their best
             Oyuncu.SendCardBackHome(kart1,cardsinfo);
@@ -304,17 +351,19 @@ public class Oyun
             //bilgisayar.SkorGoster();
 
             // below is where we humiliate the loser with extra cards
-            if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty())
-            {
-                Player.ShuffleCards(3-Player.Playing_Cards.size());
-                Turn_number = (byte)(max_turns-2);
+            if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty() && Turn_number != max_turns - 1) {
+
+                Player.ShuffleCards(3 - Player.Playing_Cards.size());
+                Turn_number = (byte) (max_turns - 2);
+
+
             }
             else Player.ShuffleCards(1);
 
-            if(bilgisayar.Playing_Cards.size() < 3 && !bilgisayar.Playing_Cards.isEmpty())
+            if(bilgisayar.Playing_Cards.size() < 3 && !bilgisayar.Playing_Cards.isEmpty() && Turn_number != max_turns - 1)
             {
                 bilgisayar.ShuffleCards(3-bilgisayar.Playing_Cards.size());
-                Turn_number = (byte)(max_turns-2);
+                Turn_number = (byte) (max_turns - 2);
             }
             else bilgisayar.ShuffleCards(1);
 
@@ -334,11 +383,23 @@ public class Oyun
             // universe starts back up, feelin refreshed
 
         }
-        System.out.println("OYUN BİTTİ, OYNADIĞINIZ İÇİN TEŞEKKÜRLER");
-
-
-
-
+        try{
+            writer.write("------------------ OYUN BİTTİ, OYNADIĞINIZ İÇİN TEŞEKKÜRLER ! ------------------\n\n\n");
+            if(Player.card_score > bilgisayar.card_score){
+                writer.write("*********** Oyuncu Kazandi ! ***********");
+            }
+            else if(Player.card_score < bilgisayar.card_score){
+                writer.write("*********** Bilgisayar Kazandi ! ***********");
+            }
+            else {
+                writer.write("*********** Oyuncu ve Bilgisayar Berabere Kaldi ! ***********");
+            }
+            writer.close();
+        }
+        catch (IOException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
 
     }
 
@@ -405,15 +466,14 @@ public class Oyun
     }
 
     // bigass function
-    public static void SaldiriHesapla(Oyuncu Player,Oyuncu bilgisayar,int kart1 ,int kart2 ,int kart3, int pckart1, int pckart2, int pckart3)
-    {
+    public static void SaldiriHesapla(Oyuncu Player,Oyuncu bilgisayar,int kart1 ,int kart2 ,int kart3, int pckart1, int pckart2, int pckart3, FileWriter writer) throws IOException {
+
         ArrayList<Integer> Cards;           ///Hangi sayilari seçtiğimi tutmak için liste
         ArrayList<Integer> CardsForComputer;        ///Üstteki ama bilgisayarlı versiyonu
 
         System.out.println("\nPlayer Playing_Cards tam liste: "+Player.Playing_Cards);
 
         System.out.println("\nPlayer Playing_Cards tam liste: "+bilgisayar.Playing_Cards);
-
 
 
         Cards = Player.kartSec(kart1,kart2,kart3);          ///Seçilen x,y,z kartlarini kart seç ile seç.
@@ -473,16 +533,35 @@ public class Oyun
             System.out.println("Insanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
             System.out.println("Bilgisayarin dayanikliliği : " + bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).dayaniklilik);
 
-            bilgisayar.card_score += (byte)Player.Playing_Cards.get(Cards.get(i)).DurumGuncelle(damageForComputer,real_XP);        ///Xp ve hasar yolla
-            Player.card_score += (byte)bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).DurumGuncelle(damageForPlayer,real_XP1);         ///Xp ve hasar yolla
+            byte XpForPc = (byte)Player.Playing_Cards.get(Cards.get(i)).DurumGuncelle(damageForComputer,real_XP);        ///Xp ve hasar yolla
+            byte XpForPlayer =  (byte)bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).DurumGuncelle(damageForPlayer,real_XP1);         ///Xp ve hasar yolla
 
+            bilgisayar.card_score += XpForPc;
+            Player.card_score +=XpForPlayer;
 
-            System.out.println("\nOyuncu hasari sudur : " +damageForPlayer);
+            System.out.println("\nOyuncu hasari sudur : " + damageForPlayer);
             System.out.println("Bilgisayar hasari sudur : " + damageForComputer);
 
             System.out.println("\nInsanlarin dayanikliliği : " + Player.Playing_Cards.get(Cards.get(i)).dayaniklilik);
             System.out.println("Bilgisayin dayanikliliği : " + bilgisayar.Playing_Cards.get(CardsForComputer.get(i)).dayaniklilik);
+
+            try{
+                writer.write("--------------- " + (i + 1) + ". Oyuncu Karti VS " + (i + 1) + ". Bilgisayar karti" + "---------------\n");
+                writer.write("Oyuncunun " + (Cards.get(i) + 1) + ". Kartı \n");
+                writer.write("Bilgisayarin " + (CardsForComputer.get(i) + 1) + ". Kartı \n");
+                writer.write("Oyuncunun verdigi hasar : " + damageForPlayer + "\n");
+                writer.write("Bilgisayarin verdiği hasar : " + damageForComputer + "\n\n");
+                writer.write("Oyuncunun kalan dayanıklılığı : " + Player.Playing_Cards.get(i).dayaniklilik + "\n");
+                writer.write("Bilgisayarin kalan dayanıklılığı : " + bilgisayar.Playing_Cards.get(i).dayaniklilik + "\n\n\n");
+                writer.write("Oyuncunun kazandiği xp : " + XpForPlayer + "\n");
+                writer.write("Bilgisayarin kazandiği xp : " + XpForPc + "\n\n");
+            }
+            catch (IOException e){
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
         }
+
     }
 
     // this one might be killing I'm not too sure tho
