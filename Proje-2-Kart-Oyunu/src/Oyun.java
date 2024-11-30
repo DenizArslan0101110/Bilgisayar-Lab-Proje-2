@@ -26,6 +26,7 @@ public class Oyun
         }
 
 
+        boolean game_ended = false;
         short max_turns = Short.parseShort(JOptionPane.showInputDialog("Tur sınırını giriniz: "));
         int starting_xp =  Integer.parseInt(JOptionPane.showInputDialog("Başlangıç seviye puanını giriniz: "));
 
@@ -225,7 +226,7 @@ public class Oyun
                             kart1++;
                         else
                             kart1 = 0;
-
+                    while(tempt >= Player.Playing_Cards.size()) tempt--;
                     if(!Player.Playing_Cards.get(tempt).is_used)
                     {
                         kart1 = tempt;
@@ -235,7 +236,7 @@ public class Oyun
                         if(card.index_in_deck==kart1 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(kart1).is_used)
                         {
                             card.is_selected_rn=true;
-                            GiveCardInfoAsText(stringass, card, Player, bilgisayar);
+                            GiveCardInfoAsText(stringass, card, Player, bilgisayar, game_ended);
                         }
                         else if(card.index_in_deck!=kart1) card.is_selected_rn=false;
                     }
@@ -268,13 +269,14 @@ public class Oyun
                             kart2 = 0;
                     int tempt = selected_card;
                     Oyuncu.SendCardToWar(kart1,1,cardsinfo,true);
+                    while(tempt >= Player.Playing_Cards.size()) tempt--;
                     if(!Player.Playing_Cards.get(tempt).is_used) kart2 = tempt;
                     for(CardForGraphics card: cardsinfo)
                     {
                         if(card.index_in_deck==kart2 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(kart2).is_used)
                         {
                             card.is_selected_rn=true;
-                            GiveCardInfoAsText(stringass, card, Player, bilgisayar);
+                            GiveCardInfoAsText(stringass, card, Player, bilgisayar, game_ended);
                         }
                         else if(card.index_in_deck!=kart2) card.is_selected_rn=false;
                     }
@@ -309,13 +311,14 @@ public class Oyun
                             kart3 = 0;
                     int tempt = selected_card;
                     Oyuncu.SendCardToWar(kart2,2,cardsinfo,true);
+                    while(tempt >= Player.Playing_Cards.size()) tempt--;
                     if(!Player.Playing_Cards.get(tempt).is_used) kart3 = tempt;
                     for(CardForGraphics card: cardsinfo)
                     {
                         if(card.index_in_deck==kart3 && card.owners_id && !card.is_selected_rn && !Player.Playing_Cards.get(kart3).is_used)
                         {
                             card.is_selected_rn=true;
-                            GiveCardInfoAsText(stringass, card, Player, bilgisayar);
+                            GiveCardInfoAsText(stringass, card, Player, bilgisayar, game_ended);
                         }
                         else if(card.index_in_deck!=kart3) card.is_selected_rn=false;
                     }
@@ -383,15 +386,20 @@ public class Oyun
             // universe starts back up, feelin refreshed
 
         }
+        game_ended = true;
+        GiveCardInfoAsText(stringass, cardsinfo.getFirst(), Player, bilgisayar, game_ended);
         try{
             writer.write("------------------ OYUN BİTTİ, OYNADIĞINIZ İÇİN TEŞEKKÜRLER ! ------------------\n\n\n");
-            if(Player.card_score > bilgisayar.card_score){
+            if(Player.card_score > bilgisayar.card_score)
+            {
                 writer.write("*********** Oyuncu Kazandi ! ***********");
             }
-            else if(Player.card_score < bilgisayar.card_score){
+            else if(Player.card_score < bilgisayar.card_score)
+            {
                 writer.write("*********** Bilgisayar Kazandi ! ***********");
             }
-            else {
+            else
+            {
                 writer.write("*********** Oyuncu ve Bilgisayar Berabere Kaldi ! ***********");
             }
             writer.close();
@@ -586,14 +594,22 @@ public class Oyun
         }
     }
 
-    public static void GiveCardInfoAsText(ArrayList<String> stringass, CardForGraphics card, Oyuncu Player, Oyuncu Bilgisayar)
+    public static void GiveCardInfoAsText(ArrayList<String> stringass, CardForGraphics card, Oyuncu Player, Oyuncu Bilgisayar, boolean game_ended)
     {
-        stringass.set(0, " Kart: "+card.machine_id);
-        stringass.set(1, " Dayanıklılık: "+card.hp+"/"+card.maxhp);
-        stringass.set(2, " Vuruş: "+card.atk);
-        stringass.set(3, " Seviye puanı: "+card.xp);
+        if(!game_ended)
+        {
+            stringass.set(0, " Kart: "+card.machine_id);
+            stringass.set(1, " Dayanıklılık: "+card.hp+"/"+card.maxhp);
+            stringass.set(2, " Vuruş: "+card.atk);
+            stringass.set(3, " Seviye puanı: "+card.xp);
+        }
         stringass.set(4, " Oyuncu Skor: "+Player.card_score);
         stringass.set(5, " Bilgisayar Skor: "+Bilgisayar.card_score);
+        stringass.set(6, " ");
+        if(Player.card_score > Bilgisayar.card_score && game_ended) stringass.set(6, " Oyuncu kazandı!");
+        else if(Player.card_score < Bilgisayar.card_score && game_ended) stringass.set(6, " Bilgisayar kazandı!");
+        else if(game_ended) stringass.set(6, " Oyuncu ve Bilgisayar berabere kaldı!");
+
     }
 
     // displays 6 card selection slots on map (yes its by hand I'm not making a for loop with 3 elements)

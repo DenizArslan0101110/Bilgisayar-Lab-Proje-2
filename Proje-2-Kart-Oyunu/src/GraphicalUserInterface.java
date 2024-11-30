@@ -144,6 +144,9 @@ public class GraphicalUserInterface extends JPanel
         g.drawString(stringass.get(3), 60, 510);
         g.drawString(stringass.get(4), 20, 800);
         g.drawString(stringass.get(5), 1000, 60);
+        g.setColor(Color.RED);
+        g.setFont(new Font("Comic Sans MS", Font.PLAIN, 100));
+        g.drawString(stringass.get(6), 265, 450);
 
 
     }
