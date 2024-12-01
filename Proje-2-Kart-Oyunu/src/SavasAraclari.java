@@ -6,14 +6,16 @@ abstract class SavasAraclari
     public String sinif;
     public boolean is_used;
 
-    public SavasAraclari(int seviyePuani,int dayaniklilik,int vurus,String sinif){
+    public SavasAraclari(int seviyePuani,int dayaniklilik,int vurus,String sinif)
+    {
         this.dayaniklilik= dayaniklilik;
         this.seviyePuani = seviyePuani;
         this.vurus = vurus;
         this.sinif = sinif;
         this.is_used = false;
     }
-    public void Stat_Goster(){
+    public void Stat_Goster()
+    {
         System.out.println(dayaniklilik);
         System.out.println(seviyePuani);
         System.out.println(vurus);

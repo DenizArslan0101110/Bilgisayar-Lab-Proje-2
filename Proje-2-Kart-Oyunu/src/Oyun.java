@@ -340,20 +340,18 @@ public class Oyun
 
             Thread.sleep(3000);
 
-            // JsonBitirici'nin torunu
+            // Saldiri hesapliyor
             SaldiriHesapla(Player,bilgisayar,kart1,kart2,kart3,isChosen.get(0),isChosen.get(1),isChosen.get(2),writer);
 
-            // give them a break they did their best
+            // cesur askerlere mola
             Oyuncu.SendCardBackHome(kart1,cardsinfo);
             Oyuncu.SendCardBackHome(kart2,cardsinfo);
             Oyuncu.SendCardBackHome(kart3,cardsinfo);
 
-            // fucking kill those who haven't tried hard enough
-            FuckingKill(Player,bilgisayar);
-            //Player.SkorGoster();
-            //bilgisayar.SkorGoster();
+            // cesur olmayan askerlere mezar
+            WouldYouKillPrettyPlease(Player,bilgisayar);
 
-            // below is where we humiliate the loser with extra cards
+            // kaybeden tarafa fazladan kart veren kısım
             if(Player.Playing_Cards.size() < 3 && !Player.Playing_Cards.isEmpty() && Turn_number != max_turns - 1) {
 
                 Player.ShuffleCards(3 - Player.Playing_Cards.size());
@@ -371,10 +369,10 @@ public class Oyun
             else bilgisayar.ShuffleCards(1);
 
 
-            // we kindly ask the universe to stop so we can sort shit out
+            // evren duruyor, arraylistler patlamasın diye
             screen_refresh_timer.stop();
 
-            Thread.sleep(100); // coconut.jpg, reality breaks if you remove this
+            Thread.sleep(100); // bu çok önemli
 
             cardsinfo.clear();
             Player.CopyCards(cardsinfo);
@@ -383,7 +381,7 @@ public class Oyun
             safecardsinfo.addAll(cardsinfo);
 
             screen_refresh_timer.start();
-            // universe starts back up, feelin refreshed
+            // evren geri başlıyor, arraylistler patlamadı
 
         }
         game_ended = true;
@@ -411,9 +409,7 @@ public class Oyun
 
     }
 
-    //public static void MaintenanceTimeStop()
-
-    // reloads and rotates the images according to their stats
+    // resim dönderiyor ( bide tekrar yüklüyor yokse dönen resim zamanla atomlarına ayrılıyor)
     public static void ReloadImages(ArrayList<CardForGraphics> cardsinfo)
     {
         boolean lift_the_veil_player = true;
@@ -433,7 +429,7 @@ public class Oyun
         }
     }
 
-    // simply enough, it forces the cards into a deck formation on both sides, ignores the cards that have been played this turn
+    // kartları şekil şukul dizen o fonksiyon
     public static void OrderCardsIntoADeck(ArrayList<CardForGraphics> cardsinfo)
     {
         byte players_deck_size = 0;
@@ -456,14 +452,12 @@ public class Oyun
                 card.SetXPos((short) (663 - (30 * players_deck_size) + (iforplayer * 60)));
                 card.SetYPos((short) (638 + (Math.pow(Math.abs(card.rotation / 3), 1.7))));
                 card.SetRotation(-45 + ((iforplayer + 0.5) * angle_increment_player));
-                //cardsinfo.get(i).AddToRotation(180);
                 iforplayer++;
             } else if (!card.owners_id && !card.in_battle_rn) {
 
                 card.SetXPos((short) (603 + (30 * dealers_deck_size) - (ifordealer * 60)));
                 card.SetYPos((short) (50 - (Math.pow(Math.abs((180 - card.rotation) / 3), 1.7))));
                 card.SetRotation(-45 + 180 + (ifordealer + 0.5) * angle_increment_dealer);
-                //cardsinfo.get(i).AddToRotation(180);
                 ifordealer++;
             }
         }
@@ -473,7 +467,7 @@ public class Oyun
         }
     }
 
-    // bigass function
+    // kocaman fonksiyon (sanırım saldırı hesaplıyor)
     public static void SaldiriHesapla(Oyuncu Player,Oyuncu bilgisayar,int kart1 ,int kart2 ,int kart3, int pckart1, int pckart2, int pckart3, FileWriter writer) throws IOException {
 
         ArrayList<Integer> Cards;           ///Hangi sayilari seçtiğimi tutmak için liste
@@ -572,8 +566,8 @@ public class Oyun
 
     }
 
-    // this one might be killing I'm not too sure tho
-    public static void FuckingKill(Oyuncu Player, Oyuncu bilgisayar)
+    // sanırım öldürüyor
+    public static void WouldYouKillPrettyPlease(Oyuncu Player, Oyuncu bilgisayar)
     {
         for(byte i = (byte)(Player.Playing_Cards.size()-1); i >= 0 ;i--)
         {
@@ -612,7 +606,7 @@ public class Oyun
 
     }
 
-    // displays 6 card selection slots on map (yes its by hand I'm not making a for loop with 3 elements)
+    // hareket etmeyecek şeyleri ekrana sabitliyor
     public static void MakeFramesAndMap(ArrayList<CardForGraphics> framesandmap)
     {
         framesandmap.add(new CardForGraphics((short)0, (short)0, (short)736, (short)490, (short)0, "Visual/wood.jpg"));

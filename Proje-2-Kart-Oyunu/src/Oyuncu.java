@@ -1,19 +1,16 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
-
 public class Oyuncu
 {
     Random random = new Random();
-
-
     boolean OyuncuID; // true insan, false makine
     String OyuncuAdi;
     int skor;
     short card_score = 0;
     byte random_byte;
-
 
     Oyuncu(boolean OyuncuID,String OyuncuAdi,int skor){
         this.OyuncuID = OyuncuID;
@@ -21,14 +18,15 @@ public class Oyuncu
         this.skor = skor;
     }
 
-    public ArrayList<SavasAraclari> Playing_Cards = new ArrayList<>();     /// Bu bizim destemiz.
+    public ArrayList<SavasAraclari> Playing_Cards = new ArrayList<>();
 
-    public void ShuffleCards(int card_number) {
-
-        for(int i = 0 ; i < card_number ; i++){     /// Kart sayisini temsil ediyor.
-
+    public void ShuffleCards(int card_number)
+    {
+        for(int i = 0 ; i < card_number ; i++)
+        {
             random_byte = (byte)random.nextInt(6);
-            switch(random_byte){ /// Random sayi atıyor buna göre oyuncu karakterinde kart dağıtımı yapılacak.
+            switch(random_byte)
+            {
                 case 0:
                     Playing_Cards.add(new Ucak(skor,20,10,"Hava","Uçak",10)); break;
                 case 1:
@@ -94,30 +92,25 @@ public class Oyuncu
                 System.out.println(this.OyuncuID+" "+tempt.altSinif+" hp: "+playingCard.dayaniklilik);
             }
         }
-        // yalan söylüyo warning bu arada, bu fonksiyon basbaya ekleme yapıyo yapmasa kod patlar
-        //cardsinfo = GraphicalUserInterface.fillImagesInAccordanceToTheirInfo(cardsinfo);
-        // edit: patlamıyomuş ne iş
     }
 
-    public ArrayList<Integer> kartSec(int x, int y, int z){       /// Insan için girilen 3 parametre için kart seç.
+    public ArrayList<Integer> kartSec(int x, int y, int z)
+    {
         LinkedHashSet<Integer> isChosen1 = new LinkedHashSet<>();
-
         isChosen1.add(x);
         isChosen1.add(y);
         isChosen1.add(z);
-
         return new ArrayList<>(isChosen1);
     }
 
-    public void SkorGoster()
+    public static void SkorGoster(Graphics g, ArrayList<String> stringer)
     {
-        for (SavasAraclari Pcard : Playing_Cards) card_score += (short)Pcard.seviyePuani;
-        //return skor;      /// Normalde return değeri vardi yedim onu.      // afied
+        g.drawString(stringer.get(4), 20, 800);
+        g.drawString(stringer.get(5), 1000, 60);
     }
 
     public static void SendCardToWar(int index_in_deck, int index_in_battle, ArrayList<CardForGraphics> cardsinfo, boolean player_called_this)
     {
-    // note to future seld, CFG is singular cards type, card is singular card, cardsinfo is the whole deck including everything on screen
         for(CardForGraphics card : cardsinfo)
         {
             if(player_called_this && card.index_in_deck == index_in_deck && card.owners_id)
@@ -130,7 +123,6 @@ public class Oyuncu
             }
             else if(!player_called_this && card.index_in_deck == index_in_deck && !card.owners_id)
             {
-
                 card.SetYPos((short)235);
                 card.SetXPos((short)(335+index_in_battle*150));
                 card.SetRotation(0);
